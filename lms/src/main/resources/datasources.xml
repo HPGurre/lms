@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<bean id="lmsDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<qualifier value="kgf"/>		
+    	<property name="driverClassName" value="com.sybase.jdbc2.jdbc.SybDriver"/>
+    	<property name="url" value="${kgf.serviceUrl}"/>
+    	<property name="username" value="${kgf.username}"/>
+    	<property name="password" value="${kgf.password}"/>
+    	<property name="maxIdle" value="5" />
+    	<property name="maxActive" value="20" /> 
+	</bean>
+
+</beans>

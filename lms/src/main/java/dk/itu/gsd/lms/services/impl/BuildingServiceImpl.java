@@ -1,0 +1,22 @@
+package dk.itu.gsd.lms.services.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import dk.itu.gsd.lms.integration.consumed.building.BuildingAdapter;
+import dk.itu.gsd.lms.services.BuildingService;
+
+@Service("buildingService")
+public class BuildingServiceImpl implements BuildingService{
+	
+	@Autowired
+	BuildingAdapter buildingAdapter;
+
+	@Override
+	public String getBuildings() {
+		return buildingAdapter.getBuildings();
+	}
+	
+	
+
+}

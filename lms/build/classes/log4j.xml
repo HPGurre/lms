@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
+  <!-- ============================== -->
+   <!-- Append messages to the console -->
+   <!-- ============================== -->
+   <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+      <param name="Target" value="System.out"/>
+	  <param name="Threshold" value="DEBUG" />
+      <layout class="org.apache.log4j.PatternLayout">
+         <!-- The default pattern: Date Priority [Category] Message\n -->
+         <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
+      </layout>
+   </appender>
+   
+      <!-- A time/date based rolling appender -->
+   <appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
+      <param name="File" value="${catalina.base}/logs/smart-regres.log"/>
+      <param name="Append" value="false"/>
+      <param name="Threshold" value="DEBUG"/>
+      <!-- Rollover at midnight each day -->
+      <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+
+      <!-- Rollover at the top of each hour
+      <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+      -->
+
+      <layout class="org.apache.log4j.PatternLayout">
+         <!-- The default pattern: Date Priority [Category] Message\n -->
+         <param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
+
+         <!-- The full pattern: Date MS Priority [Category] (Thread:NDC) Message\n
+         <param name="ConversionPattern" value="%d %-5r %-5p [%c] (%t:%x) %m%n"/>
+          -->
+      </layout>
+   </appender>
+   
+   <!-- ================ -->
+   <!-- Limit categories -->
+   <!-- ================ -->
+
+   <!-- Limit the org.apache category to INFO as its DEBUG is verbose -->
+   <category name="org">
+      <priority value="ERROR"/>
+   </category>
+
+   <category name="com">
+      <priority value="ERROR"/>
+   </category>
+   
+   <category name="dk.gjensidige">
+      <priority value="DEBUG"/>
+   </category>
+   
+   <category name="org.hibernate">
+      <priority value="ERROR"/>
+   </category>
+   
+   <category name="org.hibernate.search">
+      <priority value="INFO"/>
+   </category>
+
+   <category name="org.apache.cxf">
+      <priority value="ERROR"/>
+   </category>
+
+   <category name="org.apache.cxf.services">
+      <priority value="ERROR"/>
+   </category>
+
+   <category name="org.apache.cxf.wsdl.EndpointReferenceUtils">
+      <priority value="ERROR"/>
+   </category>  
+
+   <category name="org.drools">
+      <priority value="WARN"/>
+   </category>
+   
+<!--    <category name="dk.gjensidige.claim.recourse.business.impl.RecourseMigrationTool"> -->
+<!--       <priority value="INFO"/> -->
+<!--    </category> -->
+
+
+   <!-- Limits for at undgå ibatis loggger fejl  (sker på debug niveau) -->
+	<category name="org.mybatis">
+		<priority value="INFO" />
+	</category>
+	<category name="java.sql">
+		<priority value="INFO" />
+	</category>
+	<category name="java.sql.ResultSet">
+		<priority value="INFO" />
+	</category>
+	<category name="java.sql.Connection">
+		<priority value="INFO" />
+	</category>
+	<category name="java.sql.Statement">
+		<priority value="INFO" />
+	</category>
+	<category name="java.sql.PreparedStatement">
+		<priority value="INFO" />
+	</category>
+	<category name="org.apache.ibatis">
+		<priority value="INFO" />
+	</category>      
+
+	<!-- EHCACHE Logging -->
+   <category name="net.sf.ehcache">
+      <priority value="DEBUG"/>
+   </category>
+<!--    <category name="net.sf.ehcache.config"> -->
+<!--       <priority value="DEBUG"/> -->
+<!--    </category> -->
+<!--    <category name="net.sf.ehcache.distribution"> -->
+<!--       <priority value="DEBUG"/> -->
+<!--    </category> -->
+<!--    <category name="net.sf.ehcache.code"> -->
+<!--       <priority value="DEBUG"/> -->
+<!--    </category> -->
+
+   <root>
+      <appender-ref ref="CONSOLE"/>	  
+      <appender-ref ref="FILE"/>
+   </root>
+
+</log4j:configuration>

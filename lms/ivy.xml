@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!DOCTYPE ivy-module [
+	<!ENTITY vaadin.version "7.0.1">
+	<!ENTITY spring.version "3.2.1.RELEASE">
+	<!ENTITY jersey.version "1.17.1">
+]>
+<ivy-module version="2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+	<info organisation="dk.itu.gsd" module="lms">
+		<ivyauthor name="Hans Peter Jensen" />
+	</info>
+	<configurations>
+		<!-- The default configuration, which should be deployed to the server -->
+		<conf name="default" />
+	</configurations>
+	<dependencies>
+	<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.6"/>
+	
+		<!-- Vaadin -->
+		<dependency org="com.vaadin" name="vaadin-server" rev="&vaadin.version;" conf="default->default" />
+		<dependency org="com.vaadin" name="vaadin-themes" rev="&vaadin.version;" />
+		<dependency org="com.vaadin" name="vaadin-client-compiled" rev="&vaadin.version;" />
+		<dependency org="com.vaadin" name="vaadin-client" rev="&vaadin.version;" />
+
+		<!-- -->
+		<dependency org="ru.xpoft.vaadin" name="spring-vaadin-integration" rev="1.6.6" />
+
+		<!-- Spring libraries -->
+		<dependency org="org.springframework" name="spring-core" rev="&spring.version;" />
+		<dependency org="org.springframework" name="spring-beans" rev="&spring.version;" />
+		<dependency org="org.springframework" name="spring-context" rev="&spring.version;" />
+		<dependency org="org.springframework" name="spring-web"	rev="&spring.version;" />
+		<dependency org="org.springframework" name="spring-aop"	rev="&spring.version;" />
+		<dependency org="org.springframework" name="spring-oxm"	rev="&spring.version;" />
+		<dependency org="org.springframework" name="spring-context-support"	rev="&spring.version;" />
+		<dependency org="org.springframework" name="spring-jdbc" rev="&spring.version;" />
+		<dependency org="org.springframework" name="spring-expression" rev="&spring.version;" />
+		<!--  <dependency org="org.springframework" name="spring-tx" rev="&spring.version;" /> -->
+		<!--  <dependency org="org.springframework" name="spring-orm" rev="&spring.version;" />-->
+		<dependency org="org.springframework" name="spring-aspects"	rev="&spring.version;" />
+		<dependency org="org.springframework" name="spring-jms"	rev="&spring.version;" />
+		<dependency org="org.springframework" name="spring-test" rev="&spring.version;" />
+		<dependency org="org.springframework" name="spring-hibernate3" rev="2.0.8"/>
+		
+		<!-- JSON -->
+		<!--  <dependency org="org.jboss.resteasy" name="resteasy-jackson-provider" rev="3.0-beta-3" /> -->
+
+		<!-- REST -->
+		<dependency org="com.sun.jersey" name="jersey-client" rev="&jersey.version;" />	
+		<dependency org="com.sun.jersey" name="jersey-server" rev="&jersey.version;"/>
+		<dependency org="com.sun.jersey" name="jersey-core" rev="&jersey.version;" />
+		<dependency org="com.sun.jersey" name="jersey-servlet" rev="&jersey.version;" transitive="false"/>
+		<dependency org="com.sun.jersey.contribs" name="jersey-spring" rev="&jersey.version;" />
+		<dependency org="org.jboss.weld" name="weld-api" rev="1.1.Final" force="true"/>
+
+		<!-- Lamdaj -->
+		<dependency org="com.googlecode.lambdaj" name="lambdaj"	rev="2.3.3" />
+
+		<!-- Logging Dependencies -->
+		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" /> 
+		<dependency org="log4j" name="log4j" rev="1.2.17" />
+
+		<!-- Hibernate Dependencies -->
+		<dependency org="org.hibernate" name="hibernate" rev="3.5.4-Final"/>
+		<dependency org="org.hibernate" name="hibernate-core" rev="4.1.9.Final"/>
+		<dependency org="org.hibernate" name="hibernate-annotations" rev="3.5.6-Final"/>
+		<dependency org="org.hibernate" name="hibernate-commons-annotations" rev="3.2.0.Final"/>	
+		<dependency org="org.hibernate.javax.persistence" name="hibernate-jpa-2.0-api" rev="1.0.0.Final"/>
+		<dependency org="org.hibernate" name="hibernate-entitymanager" rev="4.2.0.CR1"/> 
+		
+		<!-- <dependency org="hibernate" name="jandex" rev="1.0.3.Final" conf="build->default; server->default" />-->
+		<!-- <dependency org="hibernate" name="classmate" rev="0.5.4" conf="build->default; server->default" />-->
+		<!-- <dependency org="org.jboss.logging" name="jboss-logging" rev="3.1.0.GA"/>  -->
+		<!-- <dependency org="hibernate" name="validation-api" rev="1.0.0.GA" conf="build->default; server->default" />-->
+		<!--  <dependency org="org.hibernate" name="hibernate-validator" rev="4.3.1.Final"/> -->
+		
+		
+		<dependency org="org.hibernate" name="hibernate-c3p0" rev="4.1.9.Final"/>
+		<!--<dependency org="org.hibernate" name="ejb3-persistence" rev="1.0.2.GA"/> -->
+            
+        <!-- AspectJ -->
+        <dependency org="org.aspectj" name="aspectjrt" rev="1.7.1"/>
+        <dependency org="org.aspectj" name="aspectjweaver" rev="1.7.1"/>
+        
+        <!-- External Build Dependencies -->
+		<!-- Apache Commons Libraries -->
+		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.3"/>
+		<dependency org="commons-collections" name="commons-collections" rev="3.2.1"/>
+		<dependency org="commons-lang" name="commons-lang" rev="2.6"/>
+		<dependency org="commons-codec" name="commons-codec" rev="1.7"/>
+		<dependency org="commons-io" name="commons-io" rev="2.4"/>
+		<dependency org="commons-jxpath" name="commons-jxpath" rev="1.3"/>
+            
+            		
+		<!-- stuff that could not be found automatically -->
+		<dependency org="com.caucho" name="hessian" rev="4.0.7" />
+		<dependency org="aopalliance" name="aopalliance" rev="1.0" />
+		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="2.0.0"/>
+
+	</dependencies>
+</ivy-module>
+    
