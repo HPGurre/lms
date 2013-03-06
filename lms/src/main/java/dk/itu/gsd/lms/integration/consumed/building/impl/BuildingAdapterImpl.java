@@ -20,7 +20,7 @@ public class BuildingAdapterImpl implements BuildingAdapter {
 
 	private static URI getBaseURI() {
 		return UriBuilder.fromUri(
-				"http://localhost:8000/api/user/buildinginfo/?format=json").build();
+				"http://gsd.itu.dk/api/user/buildinginfo/6/").build();
 	}
 	public String getBuildings() {
 		ClientConfig config = new DefaultClientConfig();
