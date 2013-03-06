@@ -12,7 +12,7 @@
 	<context:annotation-config/>
 	<context:component-scan base-package="dk.itu.gsd.lms" />
 	
-	<import resource="classpath:ds.xml" />
+	<!-- <import resource="classpath:ds.xml" />  -->
 	<!-- <import resource="classpath:data-services.xml" /> -->
 	<!-- <import resource="classpath:client-services.xml" /> -->
 	<!-- <import resource="classpath:business-services.xml" /> -->
