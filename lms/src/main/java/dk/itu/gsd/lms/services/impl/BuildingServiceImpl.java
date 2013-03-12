@@ -14,6 +14,7 @@ public class BuildingServiceImpl implements BuildingService{
 
 	@Override
 	public String getBuildings() {
+		//TODO Does anything else need to be done here?
 		return buildingAdapter.getBuildings();
 	}
 	
