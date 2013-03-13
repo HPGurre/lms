@@ -16,8 +16,8 @@ public class BuildingAdapterImpl extends AbstractAdapter implements
 	}
 
 	@Override
-	public Building getBuildingInfo() {
-		// TODO Auto-generated method stub
+	public Building getBuildingDetails() {
+		
 		return null;
 	}
 }
