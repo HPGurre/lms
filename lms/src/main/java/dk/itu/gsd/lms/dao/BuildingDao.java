@@ -1,5 +1,7 @@
 package dk.itu.gsd.lms.dao;
 
-public interface BuildingDao {
+import dk.itu.gsd.lms.model.Building;
+
+public interface BuildingDao extends GenericDao<Building>{
 
 }

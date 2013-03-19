@@ -1,7 +1,11 @@
 package dk.itu.gsd.lms.dao.impl;
 
-import dk.itu.gsd.lms.dao.BuildingDao;
+import org.springframework.stereotype.Repository;
 
-public class BuildingDaoImpl implements BuildingDao{
+import dk.itu.gsd.lms.dao.BuildingDao;
+import dk.itu.gsd.lms.model.Building;
+
+@Repository("buildingDao")
+public class BuildingDaoImpl extends GenericDaoImpl<Building> implements BuildingDao{
 
 }
