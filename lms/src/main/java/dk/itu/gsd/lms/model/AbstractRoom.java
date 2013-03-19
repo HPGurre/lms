@@ -10,7 +10,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
@@ -26,6 +25,7 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 	@Enumerated(EnumType.STRING)
 	private SecurityMode securityMode;
 	
+	//TODO We need to decide if we want this.
 	//private List<Room> adjecentRooms;
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -35,5 +35,4 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 	
 	@Column(name = "foreign_room_id", unique = true, nullable = false)
 	private Long foreignRoomID;
-
 }
