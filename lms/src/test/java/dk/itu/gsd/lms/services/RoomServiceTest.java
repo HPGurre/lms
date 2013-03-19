@@ -10,13 +10,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "/application-context.xml" })
-public class BuildingServiceTest {
+public class RoomServiceTest {
 
 	@Autowired
-	private BuildingService buildingService;
+	private RoomService roomService;
 
 	@Test
 	public void test() {
 		assertEquals("This should be a messaged describing how the test failed", 1, 1);
 	}
+	
 }
