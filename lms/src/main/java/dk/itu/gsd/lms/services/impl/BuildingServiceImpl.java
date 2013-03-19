@@ -3,6 +3,7 @@ package dk.itu.gsd.lms.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import dk.itu.gsd.lms.dao.BuildingDao;
 import dk.itu.gsd.lms.integration.consumed.building.BuildingAdapter;
 import dk.itu.gsd.lms.model.Building;
 import dk.itu.gsd.lms.services.BuildingService;
@@ -12,17 +13,18 @@ public class BuildingServiceImpl implements BuildingService{
 	
 	@Autowired
 	BuildingAdapter buildingAdapter;
+	
+	@Autowired
+	BuildingDao buildingDao;
 
 	@Override
-	public String getBuildings() {
-		//TODO Does anything else need to be done here?
-		return buildingAdapter.getBuildings();
+	public String getBuildingInfo() {
+		return buildingAdapter.getBuildingInfo();
 	}
 
 	@Override
-	public Building getBuildingDetails(int id) {
-		// TODO Auto-generated method stub
-		return new Building();
+	public Building getBuildingDescription(Long bid) {
+		return buildingAdapter.getBuildingDescription(bid);
 	}
 	
 	

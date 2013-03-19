@@ -23,7 +23,7 @@
 		<dependency org="com.vaadin" name="vaadin-themes" rev="&vaadin.version;" />
 		<dependency org="com.vaadin" name="vaadin-client-compiled" rev="&vaadin.version;" />
 		<dependency org="com.vaadin" name="vaadin-client" rev="&vaadin.version;" />
-
+		<dependency org="com.vaadin.addon" name="vaadin-charts" rev="1.0.0" conf="default->default" />
 		<!-- -->
 		<dependency org="ru.xpoft.vaadin" name="spring-vaadin-integration" rev="1.6.6" />
 

@@ -21,13 +21,13 @@ public class BuildingWS {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getBuildings() {
-		return buildingService.getBuildings();
+		return buildingService.getBuildingInfo();
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/details/{id}")
-	public BuildingDto getBuildingdetails(@PathParam("id") int id ) {
-		return new BuildingTranslater().translate(buildingService.getBuildingDetails(id));
+	public BuildingDto getBuildingdetails(@PathParam("id") Long id ) {
+		return new BuildingTranslater().translate(buildingService.getBuildingDescription(id));
 	}
 }

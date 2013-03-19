@@ -10,17 +10,17 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 public abstract class AbstractAdapter {
+	private static String SERVER_ADDRESS = "http://gsd.itu.dk/api/user/";
+	public static int LIGHTING_BID = 5;
+	
 	protected static URI getBaseURI() {
-		return UriBuilder.fromUri("http://gsd.itu.dk/api/user/buildinginfo/6/")
-				.build();
+		return UriBuilder.fromUri(SERVER_ADDRESS).build();
 	}
-
-	protected WebResource service;
+	protected WebResource resource;
 
 	public AbstractAdapter() {
 		ClientConfig config = new DefaultClientConfig();
 		Client client = Client.create(config);
-		service = client.resource(getBaseURI());
+		resource = client.resource(getBaseURI());
 	}
-
 }

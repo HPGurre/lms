@@ -4,7 +4,7 @@ import dk.itu.gsd.lms.model.Building;
 
 public interface BuildingAdapter {
 
-	public String getBuildings();
-	public Building getBuildingDetails();
+	public String getBuildingInfo();
+	public Building getBuildingDescription(Long bid);
 
 }
