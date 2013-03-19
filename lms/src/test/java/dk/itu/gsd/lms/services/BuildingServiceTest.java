@@ -17,6 +17,6 @@ public class BuildingServiceTest {
 
 	@Test
 	public void test() {
-		assertEquals("Audit user did not match expected.", 1, 1);
+		assertEquals("This should be a messaged escribing how the test failed", 1, 1);
 	}
 }
