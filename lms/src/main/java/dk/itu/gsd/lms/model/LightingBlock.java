@@ -4,11 +4,11 @@ import java.util.List;
 
 public class LightingBlock {
 
-	private List<Room> rooms;
+	private List<AbstractRoom> rooms;
 	private List<Floor> floors;
 	private Building building;
 
-	public LightingBlock(List<Room> rooms, List<Floor> floors, Building building) {
+	public LightingBlock(List<AbstractRoom> rooms, List<Floor> floors, Building building) {
 		if (false/* Rooms are not adjacent */){//TODO Make the check
 			throw new IllegalArgumentException("Rooms are not adjacent");
 		}

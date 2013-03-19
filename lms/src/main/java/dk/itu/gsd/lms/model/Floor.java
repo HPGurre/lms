@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "floor")
 public class Floor extends HibernateModel {
@@ -25,13 +26,12 @@ public class Floor extends HibernateModel {
 	@javax.persistence.ElementCollection
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "foreign_floor_id")
-	private List<Room> rooms;
+	private List<AbstractRoom> rooms;
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToOne
 	@JoinColumn(name = "foreign_building_id")
 	private Building building;
-	
 	
 	@Column(name = "foreign_floor_id", unique = true, nullable = false)
 	private Long foreignFloorID;

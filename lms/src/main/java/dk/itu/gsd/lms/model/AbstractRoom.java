@@ -1,22 +1,27 @@
 package dk.itu.gsd.lms.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+@SuppressWarnings("serial")
 @Entity
+@Inheritance
+@DiscriminatorColumn(name="Room_type")
 @Table(name = "room")
-public abstract class Room extends HibernateModel implements Serializable{
+public abstract class AbstractRoom extends HibernateModel implements Serializable{
 	@Column(name = "security_mode")
 	@Enumerated(EnumType.STRING)
 	private SecurityMode securityMode;

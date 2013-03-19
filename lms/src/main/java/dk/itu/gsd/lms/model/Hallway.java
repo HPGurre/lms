@@ -1,5 +1,12 @@
 package dk.itu.gsd.lms.model;
 
-public class Hallway extends Room {
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@SuppressWarnings("serial")
+@Entity
+@DiscriminatorValue("H")
+public class Hallway extends AbstractRoom {
 
 }
