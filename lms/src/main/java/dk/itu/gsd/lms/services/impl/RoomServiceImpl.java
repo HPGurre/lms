@@ -28,6 +28,7 @@ public class RoomServiceImpl implements RoomService{
 	@Override
 	public String getEnergyUsageByWeek(Long foreignRoomId) {
 		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -36,5 +37,14 @@ public class RoomServiceImpl implements RoomService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void getEnergymeasurements() {
+		System.out.println("Fetching measurement data...");
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 
 }

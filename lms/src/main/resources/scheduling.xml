@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context
+           				http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!-- Recourse Message Fetch Scheduling-->
+	<bean id="retrieveMeasurementsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="roomService"/>
+	  <property name="targetMethod" value="getEnergymeasurements"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="getNewMeasurementsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="retrieveMeasurementsJob"/>
+	  <property name="cronExpression" value="0/30 * * * * ?"/>
+	</bean>
+
+	<!-- Scheduling Factory -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	  <property name="triggers">
+	    <list>
+	      <ref bean="getNewMeasurementsTrigger"/>
+	    </list>
+	  </property>
+	</bean>
+</beans>

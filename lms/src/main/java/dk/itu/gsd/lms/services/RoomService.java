@@ -5,4 +5,5 @@ public interface RoomService {
 		String getEnergyUsageByWeek(Long foreignRoomId);
 		String getEnergyUsageByMonth(Long foreignRoomId);
 
+		void getEnergymeasurements();
 }
