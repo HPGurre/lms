@@ -5,5 +5,5 @@ package dk.itu.gsd.lms.services;
  * A service to test availability of the host
  */
 public interface PingService {
-	String ping();
+	public String ping();
 }
