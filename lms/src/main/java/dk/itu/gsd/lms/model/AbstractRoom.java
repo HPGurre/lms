@@ -35,4 +35,13 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 	
 	@Column(name = "foreign_room_id", unique = true, nullable = false)
 	private Long foreignRoomID;
+	
+	@Column(name = "energy_usage_day", unique = true, nullable = false)
+	private double energyUsageLastDay;
+	
+	@Column(name = "energy_usage_week", unique = true, nullable = false)
+	private double energyUsageLastWeek;
+	
+	@Column(name = "energy_usage_month", unique = true, nullable = false)
+	private double energyUsageLastMonth;
 }
