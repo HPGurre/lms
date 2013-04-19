@@ -1,5 +1,7 @@
 package dk.itu.gsd.lms.integration.exposed.building;
 
+import java.util.List;
+
 /**
  * 
  * @author HP
@@ -8,13 +10,7 @@ package dk.itu.gsd.lms.integration.exposed.building;
  */
 public class BuildingDto {
 
-	private double energyConsumptionValue;
+	
 
-	public double getEnergyConsumptionValue() {
-		return energyConsumptionValue;
-	}
 
-	public void setEnergyConsumptionValue(double energyConsumptionValue) {
-		this.energyConsumptionValue = energyConsumptionValue;
-	}
 }

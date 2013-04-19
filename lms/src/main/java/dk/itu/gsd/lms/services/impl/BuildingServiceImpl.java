@@ -26,6 +26,11 @@ public class BuildingServiceImpl implements BuildingService{
 	public Building getBuildingDescription(Long bid) {
 		return buildingAdapter.getBuildingDescription(bid);
 	}
+
+	@Override
+	public Building getBuilding(Long bid) {
+		return buildingDao.find(bid);
+	}
 	
 	
 

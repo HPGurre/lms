@@ -13,6 +13,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 @SuppressWarnings("serial")
 @Entity
 @XmlRootElement
@@ -26,6 +29,7 @@ public class Building extends HibernateModel implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private EnergyState energyState;
 	
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@javax.persistence.ElementCollection
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "foreign_building_id")
@@ -36,7 +40,7 @@ public class Building extends HibernateModel implements Serializable{
 	
 	public Building(){
 		setForeignBuildingID(1L);
-		energyState = EnergyState.ABUNDANT;
+		setEnergyState(EnergyState.ABUNDANT);
 	}
 
 	public Long getForeignBuildingID() {
@@ -45,5 +49,29 @@ public class Building extends HibernateModel implements Serializable{
 
 	public void setForeignBuildingID(Long foreignBuildingID) {
 		this.foreignBuildingID = foreignBuildingID;
+	}
+
+	public List<Floor> getFloors() {
+		return floors;
+	}
+
+	public void setFloors(List<Floor> floors) {
+		this.floors = floors;
+	}
+
+	public EnergyState getEnergyState() {
+		return energyState;
+	}
+
+	public void setEnergyState(EnergyState energyState) {
+		this.energyState = energyState;
+	}
+
+	public SecurityMode getSecurityMode() {
+		return securityMode;
+	}
+
+	public void setSecurityMode(SecurityMode securityMode) {
+		this.securityMode = securityMode;
 	}
 }
