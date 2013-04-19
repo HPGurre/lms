@@ -22,7 +22,7 @@ public class RoomWS {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
-	public RoomDto getBuildingdetails(@PathParam("id") Long id ) {
+	public RoomDto getRoomData(@PathParam("id") Long id ) {
 		return new RoomTranslater().translate(roomService.getRoomData(id));
 	}
 }

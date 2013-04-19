@@ -10,7 +10,7 @@ import dk.itu.gsd.lms.model.OrdinaryRoom;
  */
 public class RoomTranslater {
 
-	RoomDto translate(AbstractRoom room) {
+	public RoomDto translate(AbstractRoom room) {
 		RoomDto dto = new RoomDto();
 		
 		
