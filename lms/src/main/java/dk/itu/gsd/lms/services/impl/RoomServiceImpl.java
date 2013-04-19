@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import dk.itu.gsd.lms.dao.RoomDao;
 import dk.itu.gsd.lms.integration.consumed.building.RoomAdapter;
+import dk.itu.gsd.lms.model.AbstractRoom;
 import dk.itu.gsd.lms.services.RoomService;
 
 @Service("roomService")
@@ -28,7 +29,6 @@ public class RoomServiceImpl implements RoomService{
 	@Override
 	public String getEnergyUsageByWeek(Long foreignRoomId) {
 		// TODO Auto-generated method stub
-		
 		return null;
 	}
 
@@ -40,9 +40,13 @@ public class RoomServiceImpl implements RoomService{
 
 	@Override
 	public void getEnergymeasurements() {
-		System.out.println("Fetching measurement data...");
+		System.out.println("Fetching measurement data...NOT IMPLEMENTED");
 		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public AbstractRoom getRoomData(Long roomId) {
+		return roomDao.find(roomId);
 	}
 	
 	

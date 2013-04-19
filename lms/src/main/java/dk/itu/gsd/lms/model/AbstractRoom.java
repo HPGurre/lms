@@ -42,6 +42,54 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 	@Column(name = "energy_usage_week", unique = true, nullable = false)
 	private double energyUsageLastWeek;
 	
+	public SecurityMode getSecurityMode() {
+		return securityMode;
+	}
+
+	public void setSecurityMode(SecurityMode securityMode) {
+		this.securityMode = securityMode;
+	}
+
+	public Floor getFloor() {
+		return floor;
+	}
+
+	public void setFloor(Floor floor) {
+		this.floor = floor;
+	}
+
+	public Long getForeignRoomID() {
+		return foreignRoomID;
+	}
+
+	public void setForeignRoomID(Long foreignRoomID) {
+		this.foreignRoomID = foreignRoomID;
+	}
+
+	public double getEnergyUsageLastDay() {
+		return energyUsageLastDay;
+	}
+
+	public void setEnergyUsageLastDay(double energyUsageLastDay) {
+		this.energyUsageLastDay = energyUsageLastDay;
+	}
+
+	public double getEnergyUsageLastWeek() {
+		return energyUsageLastWeek;
+	}
+
+	public void setEnergyUsageLastWeek(double energyUsageLastWeek) {
+		this.energyUsageLastWeek = energyUsageLastWeek;
+	}
+
+	public double getEnergyUsageLastMonth() {
+		return energyUsageLastMonth;
+	}
+
+	public void setEnergyUsageLastMonth(double energyUsageLastMonth) {
+		this.energyUsageLastMonth = energyUsageLastMonth;
+	}
+
 	@Column(name = "energy_usage_month", unique = true, nullable = false)
 	private double energyUsageLastMonth;
 }
