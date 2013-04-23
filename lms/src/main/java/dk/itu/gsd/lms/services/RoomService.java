@@ -5,7 +5,7 @@ import dk.itu.gsd.lms.model.AbstractRoom;
 public interface RoomService {
 
 	// Service method towards the simulator
-	public String getEnergyUsageByDay(Long foreignRoomId);
+	public Long getEnergyUsageByDay(AbstractRoom room);
 	public String getEnergyUsageByWeek(Long foreignRoomId);
 	public String getEnergyUsageByMonth(Long foreignRoomId);
 
@@ -14,4 +14,5 @@ public interface RoomService {
 
 	// Scheduled method
 	public void getEnergymeasurements();
+	
 }

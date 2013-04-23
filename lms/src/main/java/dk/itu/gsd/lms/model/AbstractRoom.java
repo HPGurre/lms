@@ -1,7 +1,9 @@
 package dk.itu.gsd.lms.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
@@ -28,6 +31,20 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 	//TODO We need to decide if we want this.
 	//private List<Room> adjecentRooms;
 	
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@javax.persistence.ElementCollection
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "foreign_room_id")
+	private List<Device> devices;
+	
+	public List<Device> getDevices() {
+		return devices;
+	}
+
+	public void setDevices(List<Device> devices) {
+		this.devices = devices;
+	}
+
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToOne
 	@JoinColumn(name = "foreign_floor_id")

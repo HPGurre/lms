@@ -38,17 +38,6 @@ public class BuildingAdapterImpl extends AbstractAdapter implements
 		
 		System.out.println(response);
 		return null;
-		
-		
-		
 	}
-
-	public static void main(String[] args) {
-		BuildingAdapterImpl bai = new BuildingAdapterImpl();
-		bai.getBuildingDescription(5L);
-		bai.getBuildingInfo();
-	}
-
-	
 	
 }

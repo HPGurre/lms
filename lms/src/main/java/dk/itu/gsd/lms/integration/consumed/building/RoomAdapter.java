@@ -5,7 +5,7 @@ public interface RoomAdapter {
 	/**
 	 *  Get all the measurements for a certain device for today
 	 */
-	public void getDeviceEnergyUsageByDay(Long roomId, String deviceId);
+	public void getDeviceEnergyUsageByDay(String deviceId);
 	/**
 	 *  Get all the measurements for a certain device for the last 7 days.
 	 */

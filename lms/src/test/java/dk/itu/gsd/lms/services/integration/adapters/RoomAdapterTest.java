@@ -1,6 +1,4 @@
-package dk.itu.gsd.lms.services;
-
-import static org.junit.Assert.assertEquals;
+package dk.itu.gsd.lms.services.integration.adapters;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,16 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import dk.itu.gsd.lms.integration.consumed.building.RoomAdapter;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "/application-context.xml" })
-public class RoomServiceTest {
+public class RoomAdapterTest {
 
+	
 	@Autowired
-	private RoomService roomService;
+	private RoomAdapter roomAdapter;
 
 	@Test
 	public void test() {
-		assertEquals("This should be a messaged describing how the test failed", 1, 1);
-		roomService.getEnergymeasurements();
+		roomAdapter.getDeviceEnergyUsageByDay("room-1-light-2-production");
 	}
 }

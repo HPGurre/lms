@@ -11,7 +11,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 public abstract class AbstractAdapter {
 	private static String SERVER_ADDRESS = "http://gsd.itu.dk/api/user/";
-	public static int LIGHTING_BID = 5;
+	public static String LIGHTING_BID = "5";
 	
 	protected static URI getBaseURI() {
 		return UriBuilder.fromUri(SERVER_ADDRESS).build();
