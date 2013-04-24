@@ -1,10 +1,13 @@
 package dk.itu.gsd.lms.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dk.itu.gsd.lms.dao.RoomDao;
 import dk.itu.gsd.lms.integration.consumed.building.RoomAdapter;
+import dk.itu.gsd.lms.integration.consumed.building.model.MeasurementDto;
 import dk.itu.gsd.lms.model.AbstractRoom;
 import dk.itu.gsd.lms.model.Device;
 import dk.itu.gsd.lms.services.RoomService;
@@ -17,6 +20,7 @@ import dk.itu.gsd.lms.services.RoomService;
 
 @Service("roomService")
 public class RoomServiceImpl implements RoomService{
+	public static int LIGHTING_WATTAGE = 60;
 
 	@Autowired
 	RoomAdapter roomAdapter;
@@ -26,7 +30,7 @@ public class RoomServiceImpl implements RoomService{
 	
 	@Override
 	public Long getEnergyUsageByDay(AbstractRoom room) {
-		// TODO get list of measurement agregate the data?
+		// TODO get list of measurement aggregate the data?
 		Long roomEnergyUsage = 0L;
 		
 		//look up room devices.
@@ -34,18 +38,14 @@ public class RoomServiceImpl implements RoomService{
 			Long deviceEnergyUsage = 0L;
 			String id = device.getForeignDeviceId();
 			if (id.contains("light")) {
-				roomAdapter.getDeviceEnergyUsageByDay(id);
+				List<MeasurementDto> measurements = roomAdapter.getDeviceEnergyUsageByDay(id, "g  ain");
+				for (MeasurementDto measurementDto : measurements) {
+					deviceEnergyUsage+= Integer.parseInt(measurementDto.getValue()) * LIGHTING_WATTAGE * 15;
+				}
 			}
 			roomEnergyUsage+= deviceEnergyUsage;
 		}
-		//AbstractRoom room = roomDao.find(foreignRoomId);
-		
-		//query each device ID.
-		
-//		roomAdapter.getDeviceEnergyUsageByDay(foreignRoomId, "room-1-light-2-production");
-//		roomAdapter.getDeviceEnergyUsageByDay(foreignRoomId, "room-1-light-2-production");
-		
-		return null;
+		return roomEnergyUsage;
 	}
 
 	@Override

@@ -13,6 +13,7 @@ public abstract class AbstractAdapter {
 	private static String SERVER_ADDRESS = "http://gsd.itu.dk/api/user/";
 	public static String LIGHTING_BID = "5";
 	
+	
 	protected static URI getBaseURI() {
 		return UriBuilder.fromUri(SERVER_ADDRESS).build();
 	}

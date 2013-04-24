@@ -18,6 +18,6 @@ public class RoomAdapterTest {
 
 	@Test
 	public void test() {
-		roomAdapter.getDeviceEnergyUsageByDay("room-1-light-2-production");
+		roomAdapter.getDeviceEnergyUsageByDay("room-1-light-2", "gain");
 	}
 }

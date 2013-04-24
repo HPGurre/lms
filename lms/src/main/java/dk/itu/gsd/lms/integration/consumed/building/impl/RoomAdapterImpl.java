@@ -1,48 +1,77 @@
 package dk.itu.gsd.lms.integration.consumed.building.impl;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import dk.itu.gsd.lms.integration.consumed.building.RoomAdapter;
+import dk.itu.gsd.lms.integration.consumed.building.model.MeasurementDto;
 
 @Service("roomAdapter")
 public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {
 
-	public void getDeviceEnergyUsageByDay(String deviceId) {
-		String todayAsString = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-		todayAsString = todayAsString +" 00:00";
-		
+	public List<MeasurementDto> getDeviceEnergyUsageByDay(String deviceId,
+			String type) {
+		String todayAsString = new SimpleDateFormat("yyyy-MM-dd")
+				.format(Calendar.getInstance().getTime());
+		todayAsString = todayAsString + " 00:00";
+
 		// The following URL is an example of what is constructed
 		// http://gsd.itu.dk/api/user/measurement/?uuid=room-1-light-2-state
 		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
 		params.add("format", "json");
-		params.add("timestamp__gte", todayAsString);
-		//params.add("timestamp__lte", "Tommorrow...");
-		params.add("limit", "10");
-		params.add("uuid", deviceId);
+		// params.add("timestamp__gte", todayAsString);
+		// params.add("timestamp__lte", "Tommorrow...");
+		params.add("limit", "2");
+		params.add("uuid", String.format("%s-%s", deviceId, type));
+		// params.add("uuid", "room-1-light-2-gain");
 		params.add("bid", LIGHTING_BID);
-		
+
 		String path = "measurement/";
-		String response = resource.path(path).queryParams(params).get(String.class);
-		System.out.println(response.toString());
-		//return 2L;
+		String response = resource.path(path).queryParams(params)
+				.get(String.class);
+
+		// describe this.
+		List<MeasurementDto> result = new ArrayList<MeasurementDto>();
+		Gson gson = new Gson();
+		MeasurementDto obj = null;
+
+		JsonParser parser = new JsonParser();
+		JsonObject e = (JsonObject) parser.parse(response);
+
+		JsonArray array = (JsonArray) e.get("objects");
+		for (JsonElement jsonElement : array) {
+			result.add(gson.fromJson(jsonElement, MeasurementDto.class));
+		}
+
+		return result;
 	}
-	
+
 	@Override
 	public void getDeviceEnergyUsageByMonth(Long roomId, String deviceId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void getDeviceEnergyUsageByWeek(Long roomId, String deviceId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
