@@ -51,13 +51,13 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 	private Floor floor;
 	
 	@Column(name = "foreign_room_id", unique = true, nullable = false)
-	private Long foreignRoomID;
+	private Float foreignRoomID;
 	
 	@Column(name = "energy_usage_day", unique = true, nullable = false)
-	private double energyUsageLastDay;
+	private Float energyUsageLastDay;
 	
 	@Column(name = "energy_usage_week", unique = true, nullable = false)
-	private double energyUsageLastWeek;
+	private Float energyUsageLastWeek;
 	
 	public SecurityMode getSecurityMode() {
 		return securityMode;
@@ -75,27 +75,27 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 		this.floor = floor;
 	}
 
-	public Long getForeignRoomID() {
+	public Float getForeignRoomID() {
 		return foreignRoomID;
 	}
 
-	public void setForeignRoomID(Long foreignRoomID) {
+	public void setForeignRoomID(Float foreignRoomID) {
 		this.foreignRoomID = foreignRoomID;
 	}
 
-	public double getEnergyUsageLastDay() {
+	public Float getEnergyUsageLastDay() {
 		return energyUsageLastDay;
 	}
 
-	public void setEnergyUsageLastDay(double energyUsageLastDay) {
+	public void setEnergyUsageLastDay(Float energyUsageLastDay) {
 		this.energyUsageLastDay = energyUsageLastDay;
 	}
 
-	public double getEnergyUsageLastWeek() {
+	public Float getEnergyUsageLastWeek() {
 		return energyUsageLastWeek;
 	}
 
-	public void setEnergyUsageLastWeek(double energyUsageLastWeek) {
+	public void setEnergyUsageLastWeek(Float energyUsageLastWeek) {
 		this.energyUsageLastWeek = energyUsageLastWeek;
 	}
 

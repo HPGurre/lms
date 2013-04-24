@@ -1,8 +1,5 @@
 package dk.itu.gsd.lms.integration.consumed.building.impl;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,7 +7,6 @@ import java.util.List;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;

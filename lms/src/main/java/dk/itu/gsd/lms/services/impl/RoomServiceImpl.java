@@ -29,18 +29,19 @@ public class RoomServiceImpl implements RoomService{
 	RoomDao roomDao;
 	
 	@Override
-	public Long getEnergyUsageByDay(AbstractRoom room) {
+	public Float getEnergyUsageByDay(AbstractRoom room) {
 		// TODO get list of measurement aggregate the data?
-		Long roomEnergyUsage = 0L;
+		Float roomEnergyUsage = 0.0f;
 		
 		//look up room devices.
 		for (Device device : room.getDevices()) {
-			Long deviceEnergyUsage = 0L;
+			Float deviceEnergyUsage = 0.0f;
 			String id = device.getForeignDeviceId();
 			if (id.contains("light")) {
-				List<MeasurementDto> measurements = roomAdapter.getDeviceEnergyUsageByDay(id, "g  ain");
+				List<MeasurementDto> measurements = roomAdapter.getDeviceEnergyUsageByDay(id, "gain");
 				for (MeasurementDto measurementDto : measurements) {
-					deviceEnergyUsage+= Integer.parseInt(measurementDto.getValue()) * LIGHTING_WATTAGE * 15;
+					deviceEnergyUsage+= Float.parseFloat(measurementDto.getValue()) * LIGHTING_WATTAGE * 15;
+					System.out.println(deviceEnergyUsage);
 				}
 			}
 			roomEnergyUsage+= deviceEnergyUsage;
@@ -64,8 +65,9 @@ public class RoomServiceImpl implements RoomService{
 	public void getEnergymeasurements() {
 		System.out.println("Fetching measurement data for rooms");
 		for (AbstractRoom room : roomDao.findAll()) {
-			//getEnergyUsageByDay(room.getForeignRoomID());
-			room.setEnergyUsageLastDay((int)Math.random()*100L);
+			Float energy = getEnergyUsageByDay(room);
+			System.out.println("Energy: "+energy );
+			room.setEnergyUsageLastDay(energy);
 			roomDao.save(room);
 		}
 		System.out.println("Other measurement data...NOT IMPLEMENTED");
