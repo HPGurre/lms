@@ -37,7 +37,9 @@ public class MeasurementDto {
 	 public void setUuid(String uuid) {
 	 this.uuid = uuid;
 	 }
-
+	 public String getTimestamp() {
+		 return timestamp;
+		 }
 	 public String getValue() {
 	 return val;
 	 }
