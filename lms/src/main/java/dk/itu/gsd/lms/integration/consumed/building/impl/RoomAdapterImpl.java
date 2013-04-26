@@ -34,7 +34,7 @@ public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {
 		params.add("format", "json");
 		// params.add("timestamp__gte", todayAsString);
 		// params.add("timestamp__lte", "Tommorrow...");
-		params.add("limit", "2");
+		params.add("limit", "40");
 		params.add("uuid", String.format("%s-%s", deviceId, type));
 		// params.add("uuid", "room-1-light-2-gain");
 		params.add("bid", LIGHTING_BID);
