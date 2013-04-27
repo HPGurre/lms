@@ -33,7 +33,7 @@ Package structure
 * dk.itu.gsd.lms.ui -                     Layer to hold UI objects. Encapsulates the front end.
 
 **src/main/resources**
-* no package structure                 	  Holds resources. E.g. Datasource config files, Application context.
+* no package structure -               	  Holds resources. E.g. Datasource config files, Application context.
 
 **src/test/java**
 * dk.itu.gsd.lms -                        Holds test classes.
