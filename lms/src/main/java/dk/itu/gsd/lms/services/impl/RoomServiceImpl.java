@@ -4,8 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import org.exolab.castor.types.Date;
-import org.exolab.castor.types.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,27 +71,15 @@ public class RoomServiceImpl implements RoomService{
 	}
 
 	@Override
-	public String getEnergyUsageByWeek(Long foreignRoomId) {
+	public Float getEnergyUsageByWeek(Long foreignRoomId) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0F;
 	}
 
 	@Override
-	public String getEnergyUsageByMonth(Long foreignRoomId) {
+	public Float getEnergyUsageByMonth(Long foreignRoomId) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void getEnergymeasurements() {
-		System.out.println("Fetching measurement data for rooms");
-		for (AbstractRoom room : roomDao.findAll()) {
-			Float energy = getEnergyUsageByDay(room);
-			System.out.println("Energy: " + energy +  " kWh" );
-			room.setEnergyUsageLastDay(energy);
-			roomDao.save(room);
-		}
-		System.out.println("Other measurement data...NOT IMPLEMENTED");
+		return 0F;
 	}
 
 	@Override

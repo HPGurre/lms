@@ -9,8 +9,8 @@
 	
 	<!-- Recourse Message Fetch Scheduling-->
 	<bean id="retrieveMeasurementsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-	  <property name="targetObject" ref="roomService"/>
-	  <property name="targetMethod" value="getEnergymeasurements"/>
+	  <property name="targetObject" ref="updateService"/>
+	  <property name="targetMethod" value="updateEnergyMeasurementsFromBuilding"/>
 	  <property name="concurrent" value="false"/>
 	</bean>
 

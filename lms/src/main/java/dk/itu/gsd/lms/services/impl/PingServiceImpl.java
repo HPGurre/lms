@@ -11,5 +11,4 @@ public class PingServiceImpl implements PingService{
 	public String ping() {
 		return "Pong";
 	}
-
 }
