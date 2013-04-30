@@ -10,22 +10,22 @@ import dk.itu.gsd.lms.model.EnergyState;
  */
 public class RoomDto {
 
-	private double totalEnergyUsage;
-	private double maxEnergyUsage;
+	private float totalEnergyUsage;
+	private float maxEnergyUsage;
 	private EnergyState energyState;
-	private double dailyEnergyUsage;
-	private double weeklyEnergyUsage;
-	private double monthlyEnergyUsage;
-	public double getTotalEnergyUsage() {
+	private float dailyEnergyUsage;
+	private float weeklyEnergyUsage;
+	private float monthlyEnergyUsage;
+	public float getTotalEnergyUsage() {
 		return totalEnergyUsage;
 	}
-	public void setTotalEnergyUsage(double totalEnergyUsage) {
+	public void setTotalEnergyUsage(float totalEnergyUsage) {
 		this.totalEnergyUsage = totalEnergyUsage;
 	}
-	public double getMaxEnergyUsage() {
+	public float getMaxEnergyUsage() {
 		return maxEnergyUsage;
 	}
-	public void setMaxEnergyUsage(double maxEnergyUsage) {
+	public void setMaxEnergyUsage(float maxEnergyUsage) {
 		this.maxEnergyUsage = maxEnergyUsage;
 	}
 	public EnergyState getEnergyState() {
@@ -34,22 +34,22 @@ public class RoomDto {
 	public void setEnergyState(EnergyState energyState) {
 		this.energyState = energyState;
 	}
-	public double getDailyEnergyUsage() {
+	public float getDailyEnergyUsage() {
 		return dailyEnergyUsage;
 	}
-	public void setDailyEnergyUsage(double dailyEnergyUsage) {
+	public void setDailyEnergyUsage(float dailyEnergyUsage) {
 		this.dailyEnergyUsage = dailyEnergyUsage;
 	}
-	public double getWeeklyEnergyUsage() {
+	public float getWeeklyEnergyUsage() {
 		return weeklyEnergyUsage;
 	}
-	public void setWeeklyEnergyUsage(double weeklyEnergyUsage) {
+	public void setWeeklyEnergyUsage(float weeklyEnergyUsage) {
 		this.weeklyEnergyUsage = weeklyEnergyUsage;
 	}
-	public double getMonthlyEnergyUsage() {
+	public float getMonthlyEnergyUsage() {
 		return monthlyEnergyUsage;
 	}
-	public void setMonthlyEnergyUsage(double monthlyEnergyUsage) {
+	public void setMonthlyEnergyUsage(float monthlyEnergyUsage) {
 		this.monthlyEnergyUsage = monthlyEnergyUsage;
 	}
 

@@ -7,6 +7,7 @@ import dk.itu.gsd.lms.integration.exposed.building.model.SimpleFloor;
 import dk.itu.gsd.lms.integration.exposed.building.model.SimpleRoom;
 import dk.itu.gsd.lms.model.AbstractRoom;
 import dk.itu.gsd.lms.model.Building;
+import dk.itu.gsd.lms.model.EnergyState;
 import dk.itu.gsd.lms.model.Floor;
 
 public class BuildingTranslater{
@@ -14,7 +15,12 @@ public class BuildingTranslater{
 	public BuildingDto translate(Building building) {
 		BuildingDto dto = new BuildingDto();
 		
-		//dto.setEnergyConsumptionValue(10l);
+		dto.setDailyEnergyUsage(building.getEnergyUsageLastDay());
+		dto.setWeeklyEnergyUsage(building.getEnergyUsageLastWeek());
+		dto.setMonthlyEnergyUsage(building.getEnergyUsageLastMonth());
+		dto.setTotalEnergyUsage(1000F);
+		dto.setMaxEnergyUsage(1000F);
+		dto.setEnergyState(EnergyState.NORMAL);
 		return dto;
 	}
 

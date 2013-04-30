@@ -2,7 +2,6 @@ package dk.itu.gsd.lms.integration.exposed.room;
 
 import dk.itu.gsd.lms.model.AbstractRoom;
 import dk.itu.gsd.lms.model.EnergyState;
-import dk.itu.gsd.lms.model.OrdinaryRoom;
 /**
  * 
  * @author HP

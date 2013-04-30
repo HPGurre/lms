@@ -24,12 +24,12 @@ public class BuildingWS {
 		return buildingService.getBuildingInfo();
 	}
 	
-//	@GET
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Path("/details/{id}")
-//	public BuildingDto getBuildingdetails(@PathParam("id") Long id ) {
-//		return new BuildingTranslater().translate(buildingService.getBuildingDescription(id));
-//	}
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{id}")
+	public BuildingDto getBuildingdetails(@PathParam("id") Long id ) {
+		return new BuildingTranslater().translate(buildingService.getBuildingData(id));
+	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
