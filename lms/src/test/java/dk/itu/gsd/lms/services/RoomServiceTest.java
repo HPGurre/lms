@@ -18,6 +18,5 @@ public class RoomServiceTest {
 	@Test
 	public void test() {
 		assertEquals("This should be a messaged describing how the test failed", 1, 1);
-		roomService.getEnergymeasurements();
 	}
 }
