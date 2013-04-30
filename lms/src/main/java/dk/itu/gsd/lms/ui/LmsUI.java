@@ -9,7 +9,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import ru.xpoft.vaadin.DiscoveryNavigator;
 
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 
