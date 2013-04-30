@@ -38,6 +38,39 @@ public class Building extends HibernateModel implements Serializable{
 	@Column(name = "foreign_building_id", unique = true, nullable = false)
 	private Long foreignBuildingID;
 	
+	@Column(name = "energy_usage_day", unique = true)
+	private Float energyUsageLastDay;
+	
+	@Column(name = "energy_usage_week", unique = true)
+	private Float energyUsageLastWeek;
+	
+	@Column(name = "energy_usage_month", unique = true)
+	private Float energyUsageLastMonth;
+	
+	public Float getEnergyUsageLastDay() {
+		return energyUsageLastDay;
+	}
+
+	public void setEnergyUsageLastDay(Float energyUsageLastDay) {
+		this.energyUsageLastDay = energyUsageLastDay;
+	}
+
+	public Float getEnergyUsageLastWeek() {
+		return energyUsageLastWeek;
+	}
+
+	public void setEnergyUsageLastWeek(Float energyUsageLastWeek) {
+		this.energyUsageLastWeek = energyUsageLastWeek;
+	}
+
+	public Float getEnergyUsageLastMonth() {
+		return energyUsageLastMonth;
+	}
+
+	public void setEnergyUsageLastMonth(Float energyUsageLastMonth) {
+		this.energyUsageLastMonth = energyUsageLastMonth;
+	}
+
 	public Building(){
 		setForeignBuildingID(1L);
 		setEnergyState(EnergyState.ABUNDANT);

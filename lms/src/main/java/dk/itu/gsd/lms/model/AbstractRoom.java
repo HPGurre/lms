@@ -37,6 +37,15 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 	@JoinColumn(name = "foreign_room_id")
 	private List<Device> devices;
 	
+	@Override
+	public String toString() {
+		return "AbstractRoom [securityMode=" + securityMode + ", devices="
+				+ devices + ", floor=" + floor + ", foreignRoomID="
+				+ foreignRoomID + ", energyUsageLastDay=" + energyUsageLastDay
+				+ ", energyUsageLastWeek=" + energyUsageLastWeek
+				+ ", energyUsageLastMonth=" + energyUsageLastMonth + "]";
+	}
+
 	public List<Device> getDevices() {
 		return devices;
 	}
@@ -53,11 +62,14 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 	@Column(name = "foreign_room_id", unique = true, nullable = false)
 	private Float foreignRoomID;
 	
-	@Column(name = "energy_usage_day", unique = true, nullable = false)
+	@Column(name = "energy_usage_day", unique = true)
 	private Float energyUsageLastDay;
 	
-	@Column(name = "energy_usage_week", unique = true, nullable = false)
+	@Column(name = "energy_usage_week", unique = true)
 	private Float energyUsageLastWeek;
+	
+	@Column(name = "energy_usage_month", unique = true)
+	private Float energyUsageLastMonth;
 	
 	public SecurityMode getSecurityMode() {
 		return securityMode;
@@ -99,14 +111,13 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 		this.energyUsageLastWeek = energyUsageLastWeek;
 	}
 
-	public double getEnergyUsageLastMonth() {
+	public Float getEnergyUsageLastMonth() {
 		return energyUsageLastMonth;
 	}
 
-	public void setEnergyUsageLastMonth(double energyUsageLastMonth) {
+	public void setEnergyUsageLastMonth(Float energyUsageLastMonth) {
 		this.energyUsageLastMonth = energyUsageLastMonth;
 	}
 
-	@Column(name = "energy_usage_month", unique = true, nullable = false)
-	private double energyUsageLastMonth;
+	
 }

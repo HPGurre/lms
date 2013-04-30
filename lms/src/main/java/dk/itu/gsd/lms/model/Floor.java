@@ -34,6 +34,39 @@ public class Floor extends HibernateModel {
 	@JoinColumn(name = "foreign_building_id")
 	private Building building;
 	
+	@Column(name = "energy_usage_day", unique = true)
+	private Float energyUsageLastDay;
+	
+	@Column(name = "energy_usage_week", unique = true)
+	private Float energyUsageLastWeek;
+	
+	@Column(name = "energy_usage_month", unique = true)
+	private Float energyUsageLastMonth;
+	
+	public Float getEnergyUsageLastDay() {
+		return energyUsageLastDay;
+	}
+
+	public void setEnergyUsageLastDay(Float energyUsageLastDay) {
+		this.energyUsageLastDay = energyUsageLastDay;
+	}
+
+	public Float getEnergyUsageLastWeek() {
+		return energyUsageLastWeek;
+	}
+
+	public void setEnergyUsageLastWeek(Float energyUsageLastWeek) {
+		this.energyUsageLastWeek = energyUsageLastWeek;
+	}
+
+	public Float getEnergyUsageLastMonth() {
+		return energyUsageLastMonth;
+	}
+
+	public void setEnergyUsageLastMonth(Float energyUsageLastMonth) {
+		this.energyUsageLastMonth = energyUsageLastMonth;
+	}
+
 	@Column(name = "foreign_floor_id", unique = true, nullable = false)
 	private Long foreignFloorID;
 
