@@ -45,7 +45,6 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public Float getEnergyUsageByDay(AbstractRoom room) {
-		// TODO get list of measurement aggregate the data?
 		Float roomEnergyUsage = 0.0f;
 		Long time = (long) 0;
 		Long time2 = (long) 0;
@@ -93,15 +92,99 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public Float getEnergyUsageByWeek(Long foreignRoomId) {
-		// TODO Auto-generated method stub
-		return 0F;
+	public Float getEnergyUsageByWeek(AbstractRoom room) {
+		Float roomEnergyUsage = 0.0f;
+		Long time = (long) 0;
+		Long time2 = (long) 0;
+		Long duration = (long) 0;
+		Calendar today = Calendar.getInstance();
+		Calendar sevenDaysAgo = Calendar.getInstance();
+		sevenDaysAgo.add(Calendar.DAY_OF_YEAR, -7);
+		// look up room devices.
+		for (Device device : room.getDevices()) { // loop over all devices in
+													// room
+			Float deviceEnergyUsage = 0.0f;
+			String id = device.getForeignDeviceId();
+
+			if (id.contains("light")) {
+				List<MeasurementDto> measurements = roomAdapter.getDeviceEnergyUsageByPeriod(id, "gain", sevenDaysAgo ,today);
+				for (MeasurementDto measurementDto : measurements) { // loop
+																		// over
+																		// all
+																		// measurements
+																		// (15s)
+																		// during
+																		// the
+																		// day
+					if (measurements.indexOf(measurementDto) < measurements.size() - 1) {
+						time = convertTimestampStringToSeconds(measurementDto.getTimestamp());
+						time2 = convertTimestampStringToSeconds(measurements.get(measurements.indexOf(measurementDto) + 1).getTimestamp());
+						duration = time2 - time;
+						deviceEnergyUsage += Float.parseFloat(measurementDto.getValue()) * LIGHTING_WATTAGE * duration; // calculate
+																														// energy
+																														// used
+																														// during
+																														// 15s
+																														// for
+																														// a
+																														// single
+																														// device
+						System.out.println("Energy used by device " + id + " in time " + measurementDto.getTimestamp() + " t=" + time + ": gain = "
+								+ measurementDto.getValue() + " Energy = " + deviceEnergyUsage + " Ws" + " in " + duration + " seconds");
+					}
+				}
+			}
+			roomEnergyUsage += deviceEnergyUsage;
+		}
+		return roomEnergyUsage / 1000 / 3600*7; // this is in kWh
 	}
 
 	@Override
-	public Float getEnergyUsageByMonth(Long foreignRoomId) {
-		// TODO Auto-generated method stub
-		return 0F;
+	public Float getEnergyUsageByMonth(AbstractRoom room) {
+		Float roomEnergyUsage = 0.0f;
+		Long time = (long) 0;
+		Long time2 = (long) 0;
+		Long duration = (long) 0;
+		Calendar today = Calendar.getInstance();
+		Calendar firstDayofMonth = Calendar.getInstance();
+		firstDayofMonth.add(Calendar.DAY_OF_MONTH, 0);
+		// look up room devices.
+		for (Device device : room.getDevices()) { // loop over all devices in
+													// room
+			Float deviceEnergyUsage = 0.0f;
+			String id = device.getForeignDeviceId();
+
+			if (id.contains("light")) {
+				List<MeasurementDto> measurements = roomAdapter.getDeviceEnergyUsageByPeriod(id, "gain", firstDayofMonth ,today);
+				for (MeasurementDto measurementDto : measurements) { // loop
+																		// over
+																		// all
+																		// measurements
+																		// (15s)
+																		// during
+																		// the
+																		// day
+					if (measurements.indexOf(measurementDto) < measurements.size() - 1) {
+						time = convertTimestampStringToSeconds(measurementDto.getTimestamp());
+						time2 = convertTimestampStringToSeconds(measurements.get(measurements.indexOf(measurementDto) + 1).getTimestamp());
+						duration = time2 - time;
+						deviceEnergyUsage += Float.parseFloat(measurementDto.getValue()) * LIGHTING_WATTAGE * duration; // calculate
+																														// energy
+																														// used
+																														// during
+																														// 15s
+																														// for
+																														// a
+																														// single
+																														// device
+						System.out.println("Energy used by device " + id + " in time " + measurementDto.getTimestamp() + " t=" + time + ": gain = "
+								+ measurementDto.getValue() + " Energy = " + deviceEnergyUsage + " Ws" + " in " + duration + " seconds");
+					}
+				}
+			}
+			roomEnergyUsage += deviceEnergyUsage;
+		}
+		return roomEnergyUsage / 1000 / 3600*30; // this is in kWh //FIXME is it always 30.
 	}
 
 	@Override

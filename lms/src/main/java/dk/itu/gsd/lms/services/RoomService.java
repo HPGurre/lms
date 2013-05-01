@@ -6,8 +6,8 @@ public interface RoomService {
 
 	// Service method towards the simulator
 	public Float getEnergyUsageByDay(AbstractRoom room);
-	public Float getEnergyUsageByWeek(Long foreignRoomId);
-	public Float getEnergyUsageByMonth(Long foreignRoomId);
+	public Float getEnergyUsageByWeek(AbstractRoom room);
+	public Float getEnergyUsageByMonth(AbstractRoom room);
 
 	// Service method for serving content to android
 	public AbstractRoom getRoomData(Long RoomId);

@@ -39,11 +39,11 @@ public class UpdateServiceImpl implements UpdateService {
 
 	public void updateEnergyMeasurementsFromBuilding() {
 
-		ligtingblockService.createLightingBlock(new ArrayList<Long>() {
-			{
-				add(1L);
-			}
-		});
+//		ligtingblockService.createLightingBlock(new ArrayList<Long>() {
+//			{
+//				add(1L);
+//			}
+//		});
 
 		System.out.println("Updating measurement data for rooms");
 
@@ -52,9 +52,9 @@ public class UpdateServiceImpl implements UpdateService {
 			System.out.println("Energy: " + energy + " kWh");
 			room.setEnergyUsageLastDay(energy);
 			room.setEnergyUsageLastWeek(roomService.getEnergyUsageByWeek(room
-					.getId()));
+					));
 			room.setEnergyUsageLastMonth(roomService.getEnergyUsageByMonth(room
-					.getId()));
+					));
 			roomDao.save(room);
 		}
 
