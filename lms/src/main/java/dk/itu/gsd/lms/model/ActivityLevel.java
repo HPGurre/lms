@@ -18,8 +18,8 @@ public class ActivityLevel extends HibernateModel{
 	private int maxAct;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "lightpolicy_id")
-	private LightingBlock lb;
+	@JoinColumn(name = "lightpolicy_id_act")
+	private LightPolicy lightPolicy;
 	
 
 }

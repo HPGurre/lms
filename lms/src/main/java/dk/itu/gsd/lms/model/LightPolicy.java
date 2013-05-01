@@ -36,7 +36,7 @@ public class LightPolicy extends HibernateModel implements Serializable{
 	private int maxLux;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "lightpolicy_id")
+	@JoinColumn(name = "lightpolicy_id_act")
 	private Schedule schedule; 
 
 }
