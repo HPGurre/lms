@@ -1,5 +1,6 @@
 package dk.itu.gsd.lms.integration.consumed.building;
 
+import java.util.Calendar;
 import java.util.List;
 
 import dk.itu.gsd.lms.integration.consumed.building.model.MeasurementDto;
@@ -18,5 +19,11 @@ public interface RoomAdapter {
 	 *  Get all the measurements for a certain device for this month
 	 */
 	public void getDeviceEnergyUsageByMonth(Long roomId, String deviceId);
+	
+	/**
+	 *  Get all the measurements for a certain device for this month
+	 */
+	public List<MeasurementDto> getDeviceEnergyUsageByPeriod(String deviceId,
+			String type, Calendar startDate, Calendar endDate);
 
 }
