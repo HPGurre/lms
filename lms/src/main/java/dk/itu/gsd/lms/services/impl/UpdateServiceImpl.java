@@ -1,5 +1,7 @@
 package dk.itu.gsd.lms.services.impl;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import dk.itu.gsd.lms.model.Building;
 import dk.itu.gsd.lms.model.Floor;
 import dk.itu.gsd.lms.services.BuildingService;
 import dk.itu.gsd.lms.services.FloorService;
+import dk.itu.gsd.lms.services.LightingBlockService;
 import dk.itu.gsd.lms.services.RoomService;
 import dk.itu.gsd.lms.services.UpdateService;
 
@@ -31,7 +34,17 @@ public class UpdateServiceImpl implements UpdateService {
 	@Autowired
 	private BuildingDao buildingDao;
 
+	@Autowired
+	private LightingBlockService ligtingblockService;
+
 	public void updateEnergyMeasurementsFromBuilding() {
+
+		ligtingblockService.createLightingBlock(new ArrayList<Long>() {
+			{
+				add(1L);
+			}
+		});
+
 		System.out.println("Updating measurement data for rooms");
 
 		for (AbstractRoom room : roomDao.findAll()) {
@@ -68,5 +81,4 @@ public class UpdateServiceImpl implements UpdateService {
 		}
 
 	}
-
 }
