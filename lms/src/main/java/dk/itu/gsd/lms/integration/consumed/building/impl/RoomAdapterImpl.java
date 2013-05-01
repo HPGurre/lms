@@ -24,12 +24,12 @@ public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {
 
 	public List<MeasurementDto> getDeviceEnergyUsageByDay(String deviceId,
 			String type) {
-		String todayAsString = new SimpleDateFormat("yyyy-MM-dd")
+		String todayAsString = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 				.format(Calendar.getInstance().getTime());
 		
 		Calendar tomorrow = Calendar.getInstance();
 		tomorrow.add(Calendar.DAY_OF_YEAR, 1);
-		String tomorrowAsString = new SimpleDateFormat("yyyy-MM-dd")
+		String tomorrowAsString = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 		.format(tomorrow.getTime());
 		
 		System.out.println(todayAsString);
@@ -77,10 +77,14 @@ public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {
 	}
 	public List<MeasurementDto> getDeviceEnergyUsageByPeriod(String deviceId,
 			String type, Calendar startDate, Calendar endDate) {
-		String startDateAsString = new SimpleDateFormat("yyyy-MM-dd")
+		startDate.set(Calendar.HOUR_OF_DAY, 0);
+		startDate.set(Calendar.MINUTE, 0);
+		String startDateAsString = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 				.format(startDate.getTime());
 		
-		String endDateAsString = new SimpleDateFormat("yyyy-MM-dd")
+		endDate.set(Calendar.HOUR_OF_DAY, 0);
+		endDate.set(Calendar.MINUTE, 0);
+		String endDateAsString = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 		.format(endDate.getTime());
 		
 		System.out.println(startDateAsString);
@@ -90,21 +94,17 @@ public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {
 		// http://gsd.itu.dk/api/user/measurement/?uuid=room-1-light-2-state
 		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
 		params.add("format", "json");
-		params.add("timestamp__gte", startDateAsString); //TODO there are now measures for today!!?
+		params.add("timestamp__gte", startDateAsString); 
 		params.add("timestamp__lt", endDateAsString);
-		params.add("limit", "40");
 		params.add("uuid", String.format("%s-%s", deviceId, type));
-		// params.add("uuid", "room-1-light-2-gain");
 		params.add("bid", LIGHTING_BID);
 
 		String path = "measurement/";
 		String response = resource.path(path).queryParams(params)
 				.get(String.class);
 
-		// describe this.
 		List<MeasurementDto> result = new ArrayList<MeasurementDto>();
 		Gson gson = new Gson();
-		//MeasurementDto obj = null;
 
 		JsonParser parser = new JsonParser();
 		JsonObject e = (JsonObject) parser.parse(response);

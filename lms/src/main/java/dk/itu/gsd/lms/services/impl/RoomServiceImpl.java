@@ -2,6 +2,7 @@ package dk.itu.gsd.lms.services.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,31 +17,32 @@ import dk.itu.gsd.lms.services.RoomService;
 
 /**
  * gain * wattage = value in watt
+ * 
  * @author HP
- *
+ * 
  */
 
 @Service("roomService")
-public class RoomServiceImpl implements RoomService{
+public class RoomServiceImpl implements RoomService {
 	public static int LIGHTING_WATTAGE = 60;
 
 	@Autowired
 	RoomAdapter roomAdapter;
-	
+
 	@Autowired
 	RoomDao roomDao;
-	
-	private static Long convertTimestampStringToSeconds(String timestamp){
-        Long result = 0l;
-        String format = "yyyy-MM-dd'T'HH:mm:ss";
-        try {
-                result = new SimpleDateFormat(format).parse(timestamp).getTime();
-        } catch (ParseException e) {
-                e.printStackTrace();
-        }
-        return result/1000;
-}
-	
+
+	private static Long convertTimestampStringToSeconds(String timestamp) {
+		Long result = 0l;
+		String format = "yyyy-MM-dd'T'HH:mm:ss";
+		try {
+			result = new SimpleDateFormat(format).parse(timestamp).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return result / 1000;
+	}
+
 	@Override
 	public Float getEnergyUsageByDay(AbstractRoom room) {
 		// TODO get list of measurement aggregate the data?
@@ -48,26 +50,46 @@ public class RoomServiceImpl implements RoomService{
 		Long time = (long) 0;
 		Long time2 = (long) 0;
 		Long duration = (long) 0;
-		//look up room devices.
-		for (Device device : room.getDevices()) {  //loop over all devices in room
+		Calendar today = Calendar.getInstance();
+		Calendar tomorrow = Calendar.getInstance();
+		tomorrow.add(Calendar.DAY_OF_YEAR, 1);
+		// look up room devices.
+		for (Device device : room.getDevices()) { // loop over all devices in
+													// room
 			Float deviceEnergyUsage = 0.0f;
 			String id = device.getForeignDeviceId();
-			 
+
 			if (id.contains("light")) {
-				List<MeasurementDto> measurements = roomAdapter.getDeviceEnergyUsageByDay(id, "gain");
-				for (MeasurementDto measurementDto : measurements) {  //loop over all measurements (15s) during the day
-				  if (measurements.indexOf(measurementDto) < measurements.size()-1){
-					time = convertTimestampStringToSeconds(measurementDto.getTimestamp());
-					time2 = convertTimestampStringToSeconds(measurements.get(measurements.indexOf(measurementDto)+1).getTimestamp());
-					duration = time2-time;
-					deviceEnergyUsage+= Float.parseFloat(measurementDto.getValue()) * LIGHTING_WATTAGE * duration;  //calculate energy used during 15s for a single device
-					System.out.println("Energy used by device " + id + " in time " + measurementDto.getTimestamp() + " t="+ time + ": gain = " + measurementDto.getValue() +" Energy = " + deviceEnergyUsage + " Ws" + " in " + duration + " seconds");
-				  }
+				List<MeasurementDto> measurements = roomAdapter.getDeviceEnergyUsageByPeriod(id, "gain", today ,tomorrow);
+				for (MeasurementDto measurementDto : measurements) { // loop
+																		// over
+																		// all
+																		// measurements
+																		// (15s)
+																		// during
+																		// the
+																		// day
+					if (measurements.indexOf(measurementDto) < measurements.size() - 1) {
+						time = convertTimestampStringToSeconds(measurementDto.getTimestamp());
+						time2 = convertTimestampStringToSeconds(measurements.get(measurements.indexOf(measurementDto) + 1).getTimestamp());
+						duration = time2 - time;
+						deviceEnergyUsage += Float.parseFloat(measurementDto.getValue()) * LIGHTING_WATTAGE * duration; // calculate
+																														// energy
+																														// used
+																														// during
+																														// 15s
+																														// for
+																														// a
+																														// single
+																														// device
+						System.out.println("Energy used by device " + id + " in time " + measurementDto.getTimestamp() + " t=" + time + ": gain = "
+								+ measurementDto.getValue() + " Energy = " + deviceEnergyUsage + " Ws" + " in " + duration + " seconds");
+					}
 				}
 			}
-			roomEnergyUsage+= deviceEnergyUsage;
+			roomEnergyUsage += deviceEnergyUsage;
 		}
-		return roomEnergyUsage/1000/3600; //this is in kWh
+		return roomEnergyUsage / 1000 / 3600; // this is in kWh
 	}
 
 	@Override
@@ -86,7 +108,5 @@ public class RoomServiceImpl implements RoomService{
 	public AbstractRoom getRoomData(Long roomId) {
 		return roomDao.find(roomId);
 	}
-	
-
 
 }
