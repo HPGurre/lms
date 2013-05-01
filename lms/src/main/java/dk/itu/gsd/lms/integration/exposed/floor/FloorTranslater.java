@@ -1,7 +1,5 @@
 package dk.itu.gsd.lms.integration.exposed.floor;
 
-import dk.itu.gsd.lms.integration.exposed.room.RoomDto;
-import dk.itu.gsd.lms.model.AbstractRoom;
 import dk.itu.gsd.lms.model.EnergyState;
 import dk.itu.gsd.lms.model.Floor;
 

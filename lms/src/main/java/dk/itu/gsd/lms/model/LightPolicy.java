@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class LightPolicy extends HibernateModel implements Serializable{
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "lightingblock_id")
+	@JoinColumn(name = "lightingblock_id_policy")
 	private LightingBlock lightingBlock;
 	
 	@Column(name = "min_Lux")

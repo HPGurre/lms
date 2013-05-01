@@ -1,7 +1,6 @@
 package dk.itu.gsd.lms.services;
 
 import dk.itu.gsd.lms.model.Building;
-import dk.itu.gsd.lms.model.Floor;
 
 
 public interface BuildingService {

@@ -19,21 +19,21 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Entity
 @XmlRootElement
 @Table(name = "lightingblock")
-public class LightingBlock extends HibernateModel implements Serializable{
-	
-	@Column(name = "name", unique= true)
+public class LightingBlock extends HibernateModel implements Serializable {
+
+	@Column(name = "name", unique = true)
 	private String name;
-	
+
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@javax.persistence.ElementCollection
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "lightingblock_id")
 	private List<AbstractRoom> rooms;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "lightingblock_id")
+	@JoinColumn(name = "lightingblock_id_policy")
 	private LightPolicy lightPolicy;
-	
+
 	public LightPolicy getLightPolicy() {
 		return lightPolicy;
 	}
@@ -56,5 +56,11 @@ public class LightingBlock extends HibernateModel implements Serializable{
 
 	public void setRooms(List<AbstractRoom> rooms) {
 		this.rooms = rooms;
+	}
+
+	@Override
+	public String toString() {
+		return "LightingBlock [name=" + name + ", rooms=" + rooms
+				+ ", lightPolicy=" + lightPolicy + "]";
 	}
 }
