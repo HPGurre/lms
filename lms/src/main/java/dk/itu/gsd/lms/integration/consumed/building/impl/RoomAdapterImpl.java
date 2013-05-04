@@ -96,6 +96,7 @@ public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {
 		params.add("format", "json");
 		params.add("timestamp__gte", startDateAsString); 
 		params.add("timestamp__lt", endDateAsString);
+		params.add("limit", "178560");  //max 31 days if every 15 seconds!
 		params.add("uuid", String.format("%s-%s", deviceId, type));
 		params.add("bid", LIGHTING_BID);
 
@@ -112,10 +113,45 @@ public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {
 		JsonArray array = (JsonArray) e.get("objects");
 		for (JsonElement jsonElement : array) {
 			result.add(gson.fromJson(jsonElement, MeasurementDto.class));
-		}
+		}	
 		
+		return result;
+	}
+	
+	//return measurements by number of measurements
+	public List<MeasurementDto> getDeviceEnergyUsageByNumber(String deviceId,
+			String type, Calendar startDate, int noOfMeasurements) {
 		
+		startDate.set(Calendar.HOUR_OF_DAY, 0);
+		startDate.set(Calendar.MINUTE, 0);
+		String startDateAsString = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+				.format(startDate.getTime());
+		System.out.println("START " + startDateAsString);
+		// The following URL is an example of what is constructed
+		// http://gsd.itu.dk/api/user/measurement/?uuid=room-1-light-2-state
+		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+		params.add("format", "json");
+		params.add("timestamp__gte", startDateAsString); 
+		//params.add("timestamp__lt", endDateAsString);
+		params.add("limit", String.format("%s", noOfMeasurements+1));
+		params.add("uuid", String.format("%s-%s", deviceId, type));
+		params.add("bid", LIGHTING_BID);
 
+		String path = "measurement/";
+		String response = resource.path(path).queryParams(params)
+				.get(String.class);
+
+		List<MeasurementDto> result = new ArrayList<MeasurementDto>();
+		Gson gson = new Gson();
+
+		JsonParser parser = new JsonParser();
+		JsonObject e = (JsonObject) parser.parse(response);
+
+		JsonArray array = (JsonArray) e.get("objects");
+		for (JsonElement jsonElement : array) {
+			result.add(gson.fromJson(jsonElement, MeasurementDto.class));
+		}	
+		
 		return result;
 	}
 }

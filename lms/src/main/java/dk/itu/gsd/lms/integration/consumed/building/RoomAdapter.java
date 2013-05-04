@@ -25,5 +25,8 @@ public interface RoomAdapter {
 	 */
 	public List<MeasurementDto> getDeviceEnergyUsageByPeriod(String deviceId,
 			String type, Calendar startDate, Calendar endDate);
+	
+	public List<MeasurementDto> getDeviceEnergyUsageByNumber(String deviceId,
+			String type, Calendar startDate, int noOfMeasurements);
 
 }
