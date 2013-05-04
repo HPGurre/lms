@@ -190,6 +190,27 @@ public class RoomServiceImpl implements RoomService {
 		}
 		return (roomEnergyUsage / 1000 / 3600); // this is in kWh //FIXME is it always 30.
 	}
+	
+	public int getActivityLevel(AbstractRoom room) {
+		int activityLevel = -1;
+
+		Calendar now = Calendar.getInstance();
+		Calendar fiveMinsAgo = Calendar.getInstance();
+		fiveMinsAgo.add(Calendar.MINUTE, -5);
+		// look up room devices.
+		for (Device device : room.getDevices()) { // loop over all devices in
+													// room
+			String id = device.getForeignDeviceId();
+
+			//if (id.contains("light")) {
+			List<MeasurementDto> measurements = roomAdapter.getDeviceEnergyUsageByPeriod(id, "gain", fiveMinsAgo ,now);
+				
+			if(activityLevel < 1 && measurements.size() == 0) {activityLevel = 0;}
+			else {activityLevel = 1;}
+		}
+				
+		return activityLevel; // integer indicating activity in room = 0 if no activity during last five minutes
+	}
 
 	@Override
 	public AbstractRoom getRoomData(Long roomId) {
