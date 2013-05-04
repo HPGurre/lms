@@ -49,7 +49,11 @@ public class UpdateServiceImpl implements UpdateService {
 
 		for (AbstractRoom room : roomDao.findAll()) {
 			Float energy = roomService.getEnergyUsageByDay(room);
-			System.out.println("Energy: " + energy + " kWh");
+			System.out.println("Energy usage by day: " + energy + " kWh");
+			energy = roomService.getEnergyUsageByWeek(room);
+			System.out.println("Energy usage by week: " + energy + " kWh");
+			energy = roomService.getEnergyUsageByMonth(room);
+			System.out.println("Energy usage by month: " + energy + " kWh");
 			room.setEnergyUsageLastDay(energy);
 			room.setEnergyUsageLastWeek(roomService.getEnergyUsageByWeek(room
 					));

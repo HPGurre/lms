@@ -99,7 +99,6 @@
 		<!-- stuff that could not be found automatically -->
 		<dependency org="com.caucho" name="hessian" rev="4.0.7" />
 		<dependency org="aopalliance" name="aopalliance" rev="1.0" />
-		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="2.0.0"/>
 		
 		<dependency org="com.google.code.gson" name="gson" rev="1.4"/>
 

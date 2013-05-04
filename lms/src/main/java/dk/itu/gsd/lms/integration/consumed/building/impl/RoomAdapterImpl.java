@@ -40,7 +40,7 @@ public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {
 		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
 		params.add("format", "json");
 		// params.add("timestamp__gte", todayAsString);
-		// params.add("timestamp__lte", "Tommorrow...");
+		// params.add("timestamp__lte", "Tomorrow...");
 		params.add("limit", "40");
 		params.add("uuid", String.format("%s-%s", deviceId, type));
 		// params.add("uuid", "room-1-light-2-gain");
@@ -87,8 +87,8 @@ public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {
 		String endDateAsString = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 		.format(endDate.getTime());
 		
-		System.out.println(startDateAsString);
-		System.out.println(endDateAsString);
+		System.out.println("START " + startDateAsString);
+		System.out.println("END " + endDateAsString);
 
 		// The following URL is an example of what is constructed
 		// http://gsd.itu.dk/api/user/measurement/?uuid=room-1-light-2-state
@@ -113,6 +113,8 @@ public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {
 		for (JsonElement jsonElement : array) {
 			result.add(gson.fromJson(jsonElement, MeasurementDto.class));
 		}
+		
+		
 
 		return result;
 	}

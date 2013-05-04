@@ -51,7 +51,7 @@ public class RoomServiceImpl implements RoomService {
 		Long duration = (long) 0;
 		Calendar today = Calendar.getInstance();
 		Calendar tomorrow = Calendar.getInstance();
-		tomorrow.add(Calendar.DAY_OF_YEAR, 1);
+		tomorrow.add(Calendar.DAY_OF_YEAR, -1);
 		// look up room devices.
 		for (Device device : room.getDevices()) { // loop over all devices in
 													// room
@@ -59,7 +59,7 @@ public class RoomServiceImpl implements RoomService {
 			String id = device.getForeignDeviceId();
 
 			if (id.contains("light")) {
-				List<MeasurementDto> measurements = roomAdapter.getDeviceEnergyUsageByPeriod(id, "gain", today ,tomorrow);
+				List<MeasurementDto> measurements = roomAdapter.getDeviceEnergyUsageByPeriod(id, "gain",tomorrow, today);
 				for (MeasurementDto measurementDto : measurements) { // loop
 																		// over
 																		// all
@@ -81,7 +81,7 @@ public class RoomServiceImpl implements RoomService {
 																														// a
 																														// single
 																														// device
-						System.out.println("Energy used by device " + id + " in time " + measurementDto.getTimestamp() + " t=" + time + ": gain = "
+						System.out.println("(D) Energy used by device " + id + " in time " + measurementDto.getTimestamp() + " t=" + time + ": gain = "
 								+ measurementDto.getValue() + " Energy = " + deviceEnergyUsage + " Ws" + " in " + duration + " seconds");
 					}
 				}
@@ -100,6 +100,7 @@ public class RoomServiceImpl implements RoomService {
 		Calendar today = Calendar.getInstance();
 		Calendar sevenDaysAgo = Calendar.getInstance();
 		sevenDaysAgo.add(Calendar.DAY_OF_YEAR, -7);
+		System.out.println("date: " + today.getTime() + "  " + sevenDaysAgo.getTime());
 		// look up room devices.
 		for (Device device : room.getDevices()) { // loop over all devices in
 													// room
@@ -129,14 +130,14 @@ public class RoomServiceImpl implements RoomService {
 																														// a
 																														// single
 																														// device
-						System.out.println("Energy used by device " + id + " in time " + measurementDto.getTimestamp() + " t=" + time + ": gain = "
+						System.out.println("(W) Energy used by device " + id + " in time " + measurementDto.getTimestamp() + " t=" + time + ": gain = "
 								+ measurementDto.getValue() + " Energy = " + deviceEnergyUsage + " Ws" + " in " + duration + " seconds");
 					}
 				}
 			}
 			roomEnergyUsage += deviceEnergyUsage;
 		}
-		return roomEnergyUsage / 1000 / 3600*7; // this is in kWh
+		return roomEnergyUsage / 1000 / 3600; // this is in kWh
 	}
 
 	@Override
@@ -147,7 +148,7 @@ public class RoomServiceImpl implements RoomService {
 		Long duration = (long) 0;
 		Calendar today = Calendar.getInstance();
 		Calendar firstDayofMonth = Calendar.getInstance();
-		firstDayofMonth.add(Calendar.DAY_OF_MONTH, 0);
+		firstDayofMonth.add(Calendar.DAY_OF_MONTH, -30);
 		// look up room devices.
 		for (Device device : room.getDevices()) { // loop over all devices in
 													// room
@@ -177,14 +178,14 @@ public class RoomServiceImpl implements RoomService {
 																														// a
 																														// single
 																														// device
-						System.out.println("Energy used by device " + id + " in time " + measurementDto.getTimestamp() + " t=" + time + ": gain = "
+						System.out.println("(M) Energy used by device " + id + " in time " + measurementDto.getTimestamp() + " t=" + time + ": gain = "
 								+ measurementDto.getValue() + " Energy = " + deviceEnergyUsage + " Ws" + " in " + duration + " seconds");
 					}
 				}
 			}
 			roomEnergyUsage += deviceEnergyUsage;
 		}
-		return roomEnergyUsage / 1000 / 3600*30; // this is in kWh //FIXME is it always 30.
+		return roomEnergyUsage / 1000 / 3600; // this is in kWh //FIXME is it always 30.
 	}
 
 	@Override
