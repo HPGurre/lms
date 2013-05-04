@@ -209,7 +209,7 @@ public class RoomServiceImpl implements RoomService {
 			else {activityLevel = 1;}
 		}
 				
-		return activityLevel; // integer indicating activity in room = 0 if no activity during last five minutes
+		return activityLevel; // integer indicating activity in room = 0 if no activity.
 	}
 
 	@Override
