@@ -1,14 +1,15 @@
 package dk.itu.gsd.lms.model;
 
-import javax.persistence.CascadeType;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+@SuppressWarnings("serial")
 @Entity
 @Table(name="Activity_Level")
-public class ActivityLevel extends HibernateModel{
+public class ActivityLevel extends HibernateModel implements Serializable{
 	
 	
 	@Column(name="min_act")
@@ -17,9 +18,9 @@ public class ActivityLevel extends HibernateModel{
 	@Column(name=("max_act"))
 	private int maxAct;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "lightpolicy_id_act")
-	private LightPolicy lightPolicy;
-	
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "lightpolicy_id_act")
+//	private LightPolicy lightPolicy;
+//	
 
 }

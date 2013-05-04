@@ -21,22 +21,30 @@ import org.hibernate.annotations.LazyCollectionOption;
 public class LightPolicy extends HibernateModel implements Serializable{
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "lightingblock_id_policy")
+	@JoinColumn(name = "lb_id_")
 	private LightingBlock lightingBlock;
 	
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "lightpolicy_id")
+	@JoinColumn(name = "actLevel_id")
 	private ActivityLevel activiLevel;
 	
-	@Column(name = "min_Lux")
+	@Column(name = "min_lux")
 	private int minLux;
 	
-	@Column(name = "Mac_lux")
+	@Column(name = "max_lux")
 	private int maxLux;
 	
+	@Column(name = "energyState")
+	private EnergyState energyState;
+	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "lightpolicy_id_act")
-	private Schedule schedule; 
+	@JoinColumn(name = "schdule_id")
+	private Schedule schedule;
+	
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "energyState_id")
+//	private EnergyState energyState; 
+	
 
 }

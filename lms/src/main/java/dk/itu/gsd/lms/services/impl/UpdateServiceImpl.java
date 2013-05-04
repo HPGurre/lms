@@ -39,11 +39,16 @@ public class UpdateServiceImpl implements UpdateService {
 
 	public void updateEnergyMeasurementsFromBuilding() {
 
-//		ligtingblockService.createLightingBlock(new ArrayList<Long>() {
-//			{
-//				add(1L);
-//			}
-//		});
+		ligtingblockService.createLightingBlock(new ArrayList<Long>() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			{
+				add(1L);
+			}
+		});
 
 		System.out.println("Updating measurement data for rooms");
 
