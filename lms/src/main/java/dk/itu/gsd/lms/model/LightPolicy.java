@@ -21,7 +21,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 public class LightPolicy extends HibernateModel implements Serializable{
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "lb_id_")
+	@JoinColumn(name = "foreignkey_lightingblock_id")
 	private LightingBlock lightingBlock;
 	
 	
@@ -39,7 +39,7 @@ public class LightPolicy extends HibernateModel implements Serializable{
 	private EnergyState energyState;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "schdule_id")
+	@JoinColumn(name = "foreignkey_lightpolicy_id")
 	private Schedule schedule;
 	
 //	@OneToOne(cascade = CascadeType.ALL)

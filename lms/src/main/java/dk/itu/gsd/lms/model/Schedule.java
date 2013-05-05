@@ -21,11 +21,11 @@ public class Schedule extends HibernateModel implements Serializable{
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@javax.persistence.ElementCollection
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "schedule_id")
+	@JoinColumn(name = "foreignkey_schedule_id")
 	List<TimeRange> intervals;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "lightpolicy_id")
+	@JoinColumn(name = "foreignkey_lightpolicy_id")
 	private LightPolicy lightPolicy; 
 	
 //	

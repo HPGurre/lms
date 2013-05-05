@@ -34,7 +34,7 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@javax.persistence.ElementCollection
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "foreign_room_id")
+	@JoinColumn(name = "foreignkey_room_id")
 	private List<Device> devices;
 	
 	@Override
@@ -56,7 +56,7 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToOne
-	@JoinColumn(name = "foreign_floor_id")
+	@JoinColumn(name = "foreignkey_floor_id")
 	private Floor floor;
 	
 	@Column(name = "foreign_room_id", unique = true, nullable = false)

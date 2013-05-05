@@ -20,7 +20,7 @@ public class Device extends HibernateModel implements Serializable{
 
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToOne
-	@JoinColumn(name = "foreign_room_id")
+	@JoinColumn(name = "foreignkey_room_id")
 	private AbstractRoom room;
 	
 	@Column(name = "foreign_device_id", unique = true, nullable = false)
