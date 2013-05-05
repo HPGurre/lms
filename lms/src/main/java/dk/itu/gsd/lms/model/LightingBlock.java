@@ -27,11 +27,11 @@ public class LightingBlock extends HibernateModel implements Serializable {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@javax.persistence.ElementCollection
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "foreignkey_lightingblock_id")
+	@JoinColumn(name = "lightingblock_room_id")
 	private List<AbstractRoom> rooms;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "foreignkey_lightingblock_id")
+	@JoinColumn(name = "lightingblock_id")
 	private LightPolicy lightPolicy;
 
 	public LightPolicy getLightPolicy() {
