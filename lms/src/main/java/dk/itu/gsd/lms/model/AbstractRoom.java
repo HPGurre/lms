@@ -28,9 +28,19 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 	@Enumerated(EnumType.STRING)
 	private SecurityMode securityMode;
 	
-	//TODO We need to decide if we want this.
-	//private List<Room> adjecentRooms;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToOne
+	@JoinColumn(name = "lightingblock_id")
+	private LightingBlock lightingblock;
 	
+	public LightingBlock getLightingblock() {
+		return lightingblock;
+	}
+
+	public void setLightingblock(LightingBlock lightingblock) {
+		this.lightingblock = lightingblock;
+	}
+
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@javax.persistence.ElementCollection
 	@OneToMany(cascade = CascadeType.ALL)
