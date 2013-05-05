@@ -101,6 +101,21 @@
 		<dependency org="aopalliance" name="aopalliance" rev="1.0" />
 		
 		<dependency org="com.google.code.gson" name="gson" rev="1.4"/>
+		
+		<!-- Drools --> 
+		<dependency org="org.drools" name="drools-core" rev="5.4.0.Final">
+			<exclude module="jms"/>
+		</dependency>
+		<dependency org="org.drools" name="drools-decisiontables" rev="5.4.0.Final">
+				<exclude module="jms"/>
+		</dependency>
+		<dependency org="org.drools" name="drools-spring" rev="5.4.0.Final">
+				<exclude module="jms"/>
+		</dependency>
+		<dependency org="org.drools" name="knowledge-api" rev="5.4.0.Final">
+				<exclude module="jms"/>
+		</dependency>
+            
 
 	</dependencies>
 </ivy-module>

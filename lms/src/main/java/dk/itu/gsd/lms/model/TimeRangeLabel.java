@@ -1,5 +1,7 @@
 package dk.itu.gsd.lms.model;
 
+import java.util.Calendar;
+
 public enum TimeRangeLabel {
 	DAY("Day"),
 	EVENING("Evening"), 
@@ -19,5 +21,9 @@ public enum TimeRangeLabel {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public TimeRangeLabel getLabelFromCalendar(Calendar cal){
+		return null;
+		
 	}
 }

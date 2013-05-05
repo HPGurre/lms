@@ -11,6 +11,8 @@
 			<ibiblio name="java-net-maven1" root="http://download.java.net/maven/1" pattern="${java.net.maven.pattern}" m2compatible="false"/>
           	<ibiblio name="java-net-maven2" root="http://download.java.net/maven/2/" m2compatible="true"/>
 			<ibiblio name="eclipselink" m2compatible="true" root="http://download.eclipse.org/rt/eclipselink/maven.repo" />
+			<ibiblio name="Jboss" m2compatible="true" root="https://repository.jboss.org/nexus/content/groups/public/"/>
+			
 			<!-- Vaadin Add-on repository -->
 			<ibiblio name="vaadin-addons" usepoms="true" m2compatible="true"
 				root="http://maven.vaadin.com/vaadin-addons" />
