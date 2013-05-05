@@ -10,8 +10,11 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 public abstract class AbstractAdapter {
-	private static String SERVER_ADDRESS = "http://gsd.itu.dk/api/user/";
-	public static String LIGHTING_BID = "5";
+	protected static String SERVER_ADDRESS = "http://gsd.itu.dk/api/user/";
+	protected static String LIGHTING_BID = "5";
+	
+	protected static String MEASUREMENT_PATH = "measurement/";
+	protected static String SET_PATH = "building/entry/set/";
 	
 	
 	protected static URI getBaseURI() {
