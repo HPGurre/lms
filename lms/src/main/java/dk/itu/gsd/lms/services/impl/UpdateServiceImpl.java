@@ -65,6 +65,9 @@ public class UpdateServiceImpl implements UpdateService {
 			room.setEnergyUsageLastMonth(roomService.getEnergyUsageByMonth(room
 					));
 			roomDao.save(room);
+			
+			//test getLampMinPower function
+			System.out.println("Lamp min power = " + roomService.getLampMinPower(room));
 		}
 
 		System.out.println("Updating measurement data for floors");
