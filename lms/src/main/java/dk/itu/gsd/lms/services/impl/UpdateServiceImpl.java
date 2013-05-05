@@ -68,6 +68,9 @@ public class UpdateServiceImpl implements UpdateService {
 			
 			//test getLampMinPower function
 			System.out.println("Lamp min power = " + roomService.getLampMinPower(room));
+			
+			//change state of lamps according to the policy model
+			roomService.setLightsAccordingToPolicy(room);
 		}
 
 		System.out.println("Updating measurement data for floors");

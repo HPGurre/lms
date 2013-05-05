@@ -1,5 +1,6 @@
 package dk.itu.gsd.lms.model;
 
+
 public enum SecurityMode {
 	ALLOWED ("Light Allowed", "Devices are handled."),
 	DISALLOWED ("Light Disallowed", "Devices are allowed. All events are unhandled."),

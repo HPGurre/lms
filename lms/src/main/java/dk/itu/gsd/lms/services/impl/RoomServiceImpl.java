@@ -272,7 +272,7 @@ public class RoomServiceImpl implements RoomService {
 				sun = 1.0f;
 				
 				//retrieve cloud model from building simulator
-				cloud = 0.8f;
+				cloud = 0.2f;
 				
 				//retrieve value of blind state
 				List<MeasurementDto> measurements = roomAdapter.getDeviceEnergyUsageByNumber(id, "setpoint", now, 1);
@@ -282,7 +282,7 @@ public class RoomServiceImpl implements RoomService {
 				
 				
 				//update luminance from sun/cloud model through window
-				lmSun = lmSun + blindState * windowSize * sun * cloud; //luminous flux from windows (lm)
+				lmSun = lmSun + blindState * windowSize * sun * (1f-cloud); //luminous flux from windows (lm)
 			}
 
 		}
@@ -303,13 +303,16 @@ public class RoomServiceImpl implements RoomService {
 		//and get lighting block id
 		lightingBlockId = 1;
 		// finally, look up minimum luminance value in table
-		minRoomLum = 1.0f;
+		minRoomLum = 300.0f;
 		
 		//calculate minimum luminous flux (lumens) to be supplied by each lamp
-		minLampLum = (minRoomLum - lmSun) / noOfLamps;
+		minLampLum = Math.max(0f, minRoomLum - lmSun) / noOfLamps;
 		
 		//convert from luminous flux (lumens) to power (W) 
 		minPower =  minLampLum / efficacyLamp;
+		
+		System.out.println("no of lamps = "+ noOfLamps);
+		System.out.println("luminousity of sun-cloud-blinds = "+ lmSun);
 		
 		//return minimum power required by each lamp in the room in W
 		return minPower;
@@ -321,6 +324,8 @@ public class RoomServiceImpl implements RoomService {
 		float gain = 0f;
 		float minPower = 0f;
 		
+//		Calendar now = Calendar.getInstance();
+		
 		minPower = this.getLampMinPower(room);
 		//
 		for (Device device : room.getDevices()) { // loop over all devices in room
@@ -328,10 +333,17 @@ public class RoomServiceImpl implements RoomService {
 			if (id.contains("light")) {
 				//retrieve value of max power (wattage)
 				wattage = 60;
-				gain = minPower/wattage ;
+				gain = Math.min(1f ,minPower/wattage) ;
 				System.out.println("Lamp state = " + gain);
 				//change state of lamp
 				deviceService.toggleLight(id, gain);
+/**				
+** Retrieving measured after set the state: Not working yet.
+** My guess is duration of time. currently implemented as retrieving right after the state is changed.
+*/				
+//				List<MeasurementDto> measurements = roomAdapter.getDeviceEnergyUsageByNumber(id, "gain", now,1);
+//				float lampstate = Float.parseFloat(measurements.get(0).getValue());
+//				System.out.println("Measured Lamp state = " + lampstate);
 			}
 		}
 		

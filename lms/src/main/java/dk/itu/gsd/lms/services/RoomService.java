@@ -10,6 +10,7 @@ public interface RoomService {
 	public Float getEnergyUsageByMonth(AbstractRoom room);
 	public int getActivityLevel(AbstractRoom room);
 	public float getLampMinPower(AbstractRoom room);
+	public void setLightsAccordingToPolicy(AbstractRoom room);
 	
 	// Service method for serving content to android
 	public AbstractRoom getRoomData(Long RoomId);
