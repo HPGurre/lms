@@ -26,12 +26,12 @@ public class Floor extends HibernateModel {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@javax.persistence.ElementCollection
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "foreign_floor_id")
+	@JoinColumn(name = "foreignkey_floor_id")
 	private List<AbstractRoom> rooms;
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToOne
-	@JoinColumn(name = "foreign_building_id")
+	@JoinColumn(name = "foreignkey_building_id")
 	private Building building;
 	
 	@Column(name = "energy_usage_day", unique = true)

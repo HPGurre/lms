@@ -32,7 +32,7 @@ public class Building extends HibernateModel implements Serializable{
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@javax.persistence.ElementCollection
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "foreign_building_id")
+	@JoinColumn(name = "foreignkey_building_id")
 	private List<Floor> floors;
 	
 	@Column(name = "foreign_building_id", unique = true, nullable = false)

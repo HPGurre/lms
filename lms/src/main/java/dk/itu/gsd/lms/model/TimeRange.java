@@ -22,7 +22,7 @@ public class TimeRange extends HibernateModel implements Serializable{
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToOne
-	@JoinColumn(name = "schedule_id")
+	@JoinColumn(name = "foreignkey_schedule_id")
 	private Schedule schedule;
 	
 	@Column(name = "day_of_week")
