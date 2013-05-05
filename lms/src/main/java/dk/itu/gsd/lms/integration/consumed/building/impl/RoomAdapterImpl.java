@@ -18,6 +18,8 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import dk.itu.gsd.lms.integration.consumed.building.RoomAdapter;
 import dk.itu.gsd.lms.integration.consumed.building.model.MeasurementDto;
+import dk.itu.gsd.lms.model.AbstractRoom;
+import dk.itu.gsd.lms.model.Device;
 
 @Service("roomAdapter")
 public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {
@@ -153,5 +155,68 @@ public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {
 		}	
 		
 		return result;
+	}
+	
+	//return the power requirements for each lamp in the room in order to 
+	//Fulfil minimum lux level in the room
+	public float getLampMinPower(AbstractRoom room) {
+		float minPower = 0.0f;  //return value
+		float minLampLum = 0.0f; //minimum luminance supplied by lamps
+		float lmSun = 0.0f;	//luminance of sun
+		float sun = 0.0f;	//value from sun model
+		float cloud = 0.0f;	//value from cloud model
+		float minRoomLum = 0.0f; // minimum luminance in room based on policy model (lumens [lm])
+		float windowSize = 0.0f; //size of windows in room
+		float blindState = 0.0f; //state of window blinds
+		
+		// set luminous efficacy
+		//source: http://www.rapidtables.com/calc/light/how-lux-to-watt.htm
+//		Light type	Typical	luminous efficacy(lumens/watt)
+//		Tungsten incandescent light bulb	12.5-17.5 lm/W
+//		Halogen lamp	16-24 lm/W
+//		Fluorescent lamp	45-75 lm/W
+//		LED lamp	30-90 lm/W
+//		Metal halide lamp	75-100 lm/W
+//		High pressure sodium vapor lamp	85-150 lm/W
+//		Low pressure sodium vapor lamp	100-200 lm/W
+//		Mercury vapor lamp	35-65 lm/W
+		float efficacyLamp = 45f; //efficacy of lamps in room [lm/W]
+		
+		//assume no blinds
+				
+		//retrieve value of sun model
+		
+		//retrieve value of cloud model
+		
+		for (Device device : room.getDevices()) { // loop over all devices in
+			// room
+			
+			String id = device.getForeignDeviceId();
+
+			if (id.contains("blind")) {
+						
+				//get window size
+				windowSize = 5.0f;
+				
+				//retrieve value of blind state
+				blindState = 1.0f;
+				
+				//update luminance from sun/cloud model through window
+				lmSun = lmSun + blindState * windowSize * sun * cloud; //luminous flux from windows (lm)
+			}
+
+		}
+		
+		//retrieve minimum luminous flux (lumens) level required by policy model
+		minRoomLum = 1.0f;
+		
+		//calculate minimum luminous flux (lumens) to be supplied by lamps
+		minLampLum = minRoomLum - lmSun;
+		
+		//convert from luminous flux (lumens) to power
+		minPower =  minLampLum / efficacyLamp;
+		
+		//return minimum power required by all lamps in the room in W
+		return minPower;
 	}
 }
