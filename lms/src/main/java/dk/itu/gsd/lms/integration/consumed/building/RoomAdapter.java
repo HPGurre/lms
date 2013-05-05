@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import dk.itu.gsd.lms.integration.consumed.building.model.MeasurementDto;
+import dk.itu.gsd.lms.model.AbstractRoom;
 
 
 public interface RoomAdapter {
@@ -28,5 +29,7 @@ public interface RoomAdapter {
 	
 	public List<MeasurementDto> getDeviceEnergyUsageByNumber(String deviceId,
 			String type, Calendar startDate, int noOfMeasurements);
+	
+	public float getLampMinPower(AbstractRoom room);
 
 }
