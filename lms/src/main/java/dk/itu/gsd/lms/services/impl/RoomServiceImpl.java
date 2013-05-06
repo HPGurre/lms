@@ -354,4 +354,9 @@ public class RoomServiceImpl implements RoomService {
 		return roomDao.find(roomId);
 	}
 
+	@Override
+	public List<AbstractRoom> findAllRooms() {
+		return roomDao.findAll();
+	}
+
 }

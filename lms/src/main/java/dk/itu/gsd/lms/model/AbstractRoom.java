@@ -24,6 +24,9 @@ import org.hibernate.annotations.LazyCollectionOption;
 @DiscriminatorColumn(name="Room_type")
 @Table(name = "room")
 public abstract class AbstractRoom extends HibernateModel implements Serializable{
+	
+	public abstract String whatRoomAmI();
+	
 	@Column(name = "security_mode")
 	@Enumerated(EnumType.STRING)
 	private SecurityMode securityMode;

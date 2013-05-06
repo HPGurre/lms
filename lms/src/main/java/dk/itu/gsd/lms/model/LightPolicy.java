@@ -1,19 +1,18 @@
 package dk.itu.gsd.lms.model;
 
 import java.io.Serializable;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @XmlRootElement
@@ -41,9 +40,4 @@ public class LightPolicy extends HibernateModel implements Serializable{
 	@JoinColumn(name = "lightpolicy_id")
 	private Schedule schedule;
 	
-//	@OneToOne(cascade = CascadeType.ALL)
-//	@JoinColumn(name = "energyState_id")
-//	private EnergyState energyState; 
-	
-
 }

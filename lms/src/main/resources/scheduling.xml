@@ -7,16 +7,28 @@
 						http://www.springframework.org/schema/context
            				http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	
-	<!-- Recourse Message Fetch Scheduling-->
-	<bean id="retrieveMeasurementsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<!-- update measurements schedule-->
+	<bean id="updateMeasurementsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 	  <property name="targetObject" ref="updateService"/>
-	  <property name="targetMethod" value="updateEnergyMeasurementsFromBuilding"/>
+	  <property name="targetMethod" value="updateMeasurements"/>
 	  <property name="concurrent" value="false"/>
 	</bean>
 
 	<bean id="getNewMeasurementsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-	  <property name="jobDetail" ref="retrieveMeasurementsJob"/>
+	  <property name="jobDetail" ref="updateMeasurementsJob"/>
 	  <property name="cronExpression" value="0/30 * * * * ?"/>
+	</bean>
+	
+	<!-- update lighting schedule-->
+	<bean id="updateLightsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="updateService"/>
+	  <property name="targetMethod" value="updateLights"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="updateLightsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="updateLightsJob"/>
+	  <property name="cronExpression" value="0 * * * * ?"/>
 	</bean>
 
 	<!-- Scheduling Factory -->
@@ -24,6 +36,7 @@
 	  <property name="triggers">
 	    <list>
 	      <ref bean="getNewMeasurementsTrigger"/>
+	      <ref bean="updateLightsTrigger"/>
 	    </list>
 	  </property>
 	</bean>

@@ -12,11 +12,11 @@
 	<context:annotation-config/>
 	<context:component-scan base-package="dk.itu.gsd.lms" />
 	
+	<!-- DB config -->
 	<import resource="classpath:ds.xml" />
+
+	<!-- Drools configuration -->
 	<import resource="classpath:rules-services.xml" /> 
-	<!-- <import resource="classpath:data-services.xml" /> -->
-	<!-- <import resource="classpath:client-services.xml" /> -->
-	<!-- <import resource="classpath:business-services.xml" /> -->
 
 	<!-- Scheduling configuration -->
 	<import resource="scheduling.xml" />

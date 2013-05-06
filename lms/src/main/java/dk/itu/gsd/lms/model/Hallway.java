@@ -8,4 +8,9 @@ import javax.persistence.Entity;
 @DiscriminatorValue("H")
 public class Hallway extends AbstractRoom {
 
+	@Override
+	public String whatRoomAmI() {
+		return "HALLWAY";
+	}
+
 }

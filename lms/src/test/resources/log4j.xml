@@ -16,7 +16,7 @@
    
       <!-- A time/date based rolling appender -->
    <appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
-      <param name="File" value="${catalina.base}/logs/smart-regres.log"/>
+      <param name="File" value="${catalina.base}/logs/lms.log"/>
       <param name="Append" value="false"/>
       <param name="Threshold" value="DEBUG"/>
       <!-- Rollover at midnight each day -->

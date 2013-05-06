@@ -7,9 +7,9 @@ import javax.persistence.Entity;
 @DiscriminatorValue("O")
 public class OrdinaryRoom extends AbstractRoom {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	@Override
+	public String whatRoomAmI() {
+		return "ORDINARY";
+	}
 
 }

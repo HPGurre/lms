@@ -16,6 +16,7 @@ public abstract class AbstractAdapter {
 	protected static String MEASUREMENT_PATH = "measurement/";
 	protected static String SET_PATH = "building/entry/set/";
 	
+	protected static int NO_OF_MEASUREMENTS_PER_MIN = 4;
 	
 	protected static URI getBaseURI() {
 		return UriBuilder.fromUri(SERVER_ADDRESS).build();

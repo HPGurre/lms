@@ -1,8 +1,6 @@
 package dk.itu.gsd.lms.integration.consumed.building.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -33,19 +31,12 @@ public class DeviceAdapterImpl extends AbstractAdapter implements DeviceAdapter 
 	}
 
 	// return measurements by number of measurements
-	public List<MeasurementDto> getDeviceEnergyUsageByNumber(String deviceId, String type, Calendar startDate, int noOfMeasurements) {
+	public List<MeasurementDto> getLatestDeviceMeasurements(String deviceId, String type, int minutes) {
 
-		startDate.set(Calendar.HOUR_OF_DAY, 0);
-		startDate.set(Calendar.MINUTE, 0);
-		String startDateAsString = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(startDate.getTime());
-		System.out.println("START " + startDateAsString);
-		// The following URL is an example of what is constructed
-		// http://gsd.itu.dk/api/user/measurement/?uuid=room-1-light-2-state
 		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
 		params.add("format", "json");
-		params.add("timestamp__gte", startDateAsString);
-		// params.add("timestamp__lt", endDateAsString);
-		params.add("limit", String.format("%s", noOfMeasurements + 1));
+		params.add("order_by", "-timestamp");
+		params.add("limit", String.format("%s", minutes + NO_OF_MEASUREMENTS_PER_MIN));
 		params.add("uuid", String.format("%s-%s", deviceId, type));
 		params.add("bid", LIGHTING_BID);
 

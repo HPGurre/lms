@@ -14,10 +14,13 @@ public class RuleServiceTest {
 
 	@Autowired
 	private RuleService ruleService;
+	
+	@Autowired
+	private RoomService roomService;
 
 	@Test
 	public void test() {
-		System.out.println("Result is:"+ruleService.getTimeout());
+		System.out.println("Result is:"+ruleService.getTimeout(roomService.getRoomData(7L)));
 		
 		assertEquals("This should be a messaged describing how the test failed", 1, 1);
 	}
