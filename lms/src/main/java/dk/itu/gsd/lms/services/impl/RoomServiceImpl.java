@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dk.itu.gsd.lms.dao.RoomDao;
-import dk.itu.gsd.lms.integration.consumed.building.DeviceAdapter;
 import dk.itu.gsd.lms.integration.consumed.building.RoomAdapter;
 import dk.itu.gsd.lms.integration.consumed.building.model.MeasurementDto;
 import dk.itu.gsd.lms.model.AbstractRoom;

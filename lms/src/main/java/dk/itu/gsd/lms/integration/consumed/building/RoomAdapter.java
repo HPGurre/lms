@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import dk.itu.gsd.lms.integration.consumed.building.model.MeasurementDto;
-import dk.itu.gsd.lms.model.AbstractRoom;
 
 
 public interface RoomAdapter {

@@ -18,8 +18,6 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import dk.itu.gsd.lms.integration.consumed.building.RoomAdapter;
 import dk.itu.gsd.lms.integration.consumed.building.model.MeasurementDto;
-import dk.itu.gsd.lms.model.AbstractRoom;
-import dk.itu.gsd.lms.model.Device;
 
 @Service("roomAdapter")
 public class RoomAdapterImpl extends AbstractAdapter implements RoomAdapter {

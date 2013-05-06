@@ -1,10 +1,6 @@
 package dk.itu.gsd.lms.model;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "lightpolicy")
 public class LightPolicy extends HibernateModel implements Serializable{
 	
+	private static final long serialVersionUID = 5450657701489941007L;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "lightingblock_id")
 	private LightingBlock lightingBlock;

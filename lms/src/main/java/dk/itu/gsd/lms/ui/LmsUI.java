@@ -19,6 +19,7 @@ import com.vaadin.ui.UI;
 @Scope("prototype")
 public class LmsUI extends UI implements Serializable{
 	
+	private static final long serialVersionUID = 1047500146251422525L;
 	@Autowired
 	private WebApplicationContext applicationContext;
 

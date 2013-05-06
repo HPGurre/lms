@@ -20,6 +20,9 @@ public class LightingblockServiceTest {
 	@Test
 	public void test() {
 		LightingBlock lb = lightingblockService.createLightingBlock(new ArrayList<Long>() {
+
+			private static final long serialVersionUID = 1L;
+
 			{
 				add(1L);
 			}
