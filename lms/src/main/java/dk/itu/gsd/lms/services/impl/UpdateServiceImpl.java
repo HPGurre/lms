@@ -105,7 +105,7 @@ public class UpdateServiceImpl implements UpdateService {
 			//hence we look at each device and see if there has been any activity in the last x minutes, where x is taken from the schedule
 			for (Device device : room.getDevices()) {
 				boolean hasActivityOccured = false;
-				int minutesBeforeLightShouldTurnOff = ruleService.getTimeout(room);
+				int minutesBeforeLightShouldTurnOff = ruleService.getRoomTimeout(room);
 				
 				//Lights have different output (gain, state)we need to look at.
 				if (device.getForeignDeviceId().contains("light")) {

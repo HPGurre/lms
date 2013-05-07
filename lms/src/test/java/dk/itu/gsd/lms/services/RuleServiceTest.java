@@ -2,6 +2,7 @@ package dk.itu.gsd.lms.services;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,15 @@ public class RuleServiceTest {
 	private RoomService roomService;
 
 	@Test
+	@Ignore
 	public void test() {
-		System.out.println("Result is:"+ruleService.getTimeout(roomService.getRoomData(7L)));
+		System.out.println("Result is:"+ruleService.getRoomTimeout(roomService.getRoomData(7L)));	
+		assertEquals("This should be a messaged describing how the test failed", 1, 1);
+	}
+	
+	@Test
+	public void test1() {
+		System.out.println("Result is:"+ruleService.getRoomRecommendedLux(roomService.getRoomData(7L)));
 		
 		assertEquals("This should be a messaged describing how the test failed", 1, 1);
 	}

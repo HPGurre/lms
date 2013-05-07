@@ -14,6 +14,7 @@
 	<drools:resource id="ScheduleRules" type="DTABLE" source="classpath:schedule-rules.xls">
 		<drools:decisiontable-conf input-type="XLS" worksheet-name="Tables"  />	
 	</drools:resource>
+
  	
  	<drools:kbase id="kbase">
 		<drools:resources>
@@ -25,6 +26,27 @@
 			<drools:multithread enabled="false"/>
 		</drools:configuration>
 	</drools:kbase>
-	
+
 	<drools:ksession kbase="kbase" type="stateless" id="ksession"/>
+	
+	
+	<!-- Lux -->
+	<drools:resource id="LuxRules" type="DTABLE" source="classpath:lux-rules.xls">
+		<drools:decisiontable-conf input-type="XLS" worksheet-name="Tables"  />	
+	</drools:resource>
+	
+	<drools:kbase id="kbase1">
+		<drools:resources>
+			<drools:resource ref="LuxRules"/>
+		</drools:resources>
+		<drools:configuration>
+			<drools:mbeans enabled="true" />
+			<drools:event-processing-mode mode="STREAM" />
+			<drools:multithread enabled="false"/>
+		</drools:configuration>
+	</drools:kbase>
+	
+	
+	
+	<drools:ksession kbase="kbase1" type="stateless" id="ksession1"/>
 </beans>
