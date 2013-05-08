@@ -34,35 +34,13 @@ public class RoomServiceImpl implements RoomService {
 	private static Logger logger = Logger.getLogger(RoomServiceImpl.class);
 	public static int LIGHTING_WATTAGE = 60;
 
-	@Autowired
-	RoomAdapter roomAdapter;
-
-	@Autowired
-	DeviceAdapter deviceAdapter;
-
-	@Autowired
-	private DeviceService deviceService;
-
-	@Autowired
-	RoomDao roomDao;
-	@Autowired
-	FloorDao floorDao;
-	@Autowired
-	BuildingDao buildingDao;
-
-	@Autowired
-	RuleService ruleService;
-
-	private static Long convertTimestampStringToSeconds(String timestamp) {
-		Long result = 0l;
-		String format = "yyyy-MM-dd'T'HH:mm:ss";
-		try {
-			result = new SimpleDateFormat(format).parse(timestamp).getTime();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return result / 1000;
-	}
+	@Autowired private RoomAdapter roomAdapter;
+	@Autowired private DeviceAdapter deviceAdapter;
+	@Autowired private DeviceService deviceService;
+	@Autowired private RoomDao roomDao;
+	@Autowired private FloorDao floorDao;
+	@Autowired private BuildingDao buildingDao;
+	@Autowired private RuleService ruleService;
 
 	@Override
 	public Float getEnergyUsageByDay(Room room) {
@@ -75,34 +53,23 @@ public class RoomServiceImpl implements RoomService {
 		tomorrow.add(Calendar.DAY_OF_YEAR, -1);
 
 		// look up room devices.
-		for (Device device : room.getDevices()) { // loop over all devices in
-													// room
+		for (Device device : room.getDevices()) { 
+			// loop over all devices in room
 			Float deviceEnergyUsage = 0.0f;
 			String id = device.getForeignDeviceId();
 
 			if (id.contains("light")) {
 				List<MeasurementDto> measurements = deviceAdapter.getDeviceEnergyUsageByPeriod(id, "gain", tomorrow, today);
-				for (MeasurementDto measurementDto : measurements) { // loop
-																		// over
-																		// all
-																		// measurements
-																		// (15s)
-																		// during
-																		// the
-																		// day
+				for (MeasurementDto measurementDto : measurements) { 
+					
+					// loop overall measurements(15s) during the day
 					if (measurements.indexOf(measurementDto) < measurements.size() - 1) {
 						time = convertTimestampStringToSeconds(measurementDto.getTimestamp());
 						time2 = convertTimestampStringToSeconds(measurements.get(measurements.indexOf(measurementDto) + 1).getTimestamp());
 						duration = time2 - time;
-						deviceEnergyUsage += Float.parseFloat(measurementDto.getValue()) * LIGHTING_WATTAGE * duration; // calculate
-																														// energy
-																														// used
-																														// during
-																														// 15s
-																														// for
-																														// a
-																														// single
-																														// device
+						deviceEnergyUsage += Float.parseFloat(measurementDto.getValue()) * LIGHTING_WATTAGE * duration; 
+						
+						// calculate energy used during 15s for a single device
 						// System.out.println("(D) Energy used by device " + id
 						// + " in time " + measurementDto.getTimestamp() + " t="
 						// + time + ": gain = "
@@ -138,27 +105,16 @@ public class RoomServiceImpl implements RoomService {
 				// List<MeasurementDto> measurements =
 				// roomAdapter.getDeviceEnergyUsageByNumber(id, "gain",
 				// sevenDaysAgo, 27);
-				for (MeasurementDto measurementDto : measurements) { // loop
-																		// over
-																		// all
-																		// measurements
-																		// (15s)
-																		// during
-																		// the
-																		// day
+				for (MeasurementDto measurementDto : measurements) { 
+					// loop over all measurements (15s) during the day
 					if (measurements.indexOf(measurementDto) < measurements.size() - 1) {
 						time = convertTimestampStringToSeconds(measurementDto.getTimestamp());
 						time2 = convertTimestampStringToSeconds(measurements.get(measurements.indexOf(measurementDto) + 1).getTimestamp());
 						duration = time2 - time;
-						deviceEnergyUsage += Float.parseFloat(measurementDto.getValue()) * LIGHTING_WATTAGE * duration; // calculate
-																														// energy
-																														// used
-																														// during
-																														// 15s
-																														// for
-																														// a
-																														// single
-																														// device
+						deviceEnergyUsage += Float.parseFloat(measurementDto.getValue()) * LIGHTING_WATTAGE * duration; 
+						
+						
+						// calculate energy used during 15s for a single device
 						// System.out.println("(W) Energy used by device " + id
 						// + " in time " + measurementDto.getTimestamp() + " t="
 						// + time + ": gain = "
@@ -190,28 +146,16 @@ public class RoomServiceImpl implements RoomService {
 
 			if (id.contains("light")) {
 				List<MeasurementDto> measurements = deviceAdapter.getDeviceEnergyUsageByPeriod(id, "gain", firstDayofMonth, today);
-				for (MeasurementDto measurementDto : measurements) { // loop
-																		// over
-																		// all
-																		// measurements
-																		// (15s)
-																		// during
-																		// the
-																		// day
+				for (MeasurementDto measurementDto : measurements) { 
+					// loop over all measurements (15s) during the day
 
 					if (measurements.indexOf(measurementDto) < measurements.size() - 1) {
 						time = convertTimestampStringToSeconds(measurementDto.getTimestamp());
 						time2 = convertTimestampStringToSeconds(measurements.get(measurements.indexOf(measurementDto) + 1).getTimestamp());
 						duration = time2 - time;
-						deviceEnergyUsage += Float.parseFloat(measurementDto.getValue()) * LIGHTING_WATTAGE * duration; // calculate
-																														// energy
-																														// used
-																														// during
-																														// 15s
-																														// for
-																														// a
-																														// single
-																														// device
+						deviceEnergyUsage += Float.parseFloat(measurementDto.getValue()) * LIGHTING_WATTAGE * duration; 
+						
+						// calculate energy used during 15s for a single device
 						// System.out.println("(M) Energy used by device " + id
 						// + " in time " + measurementDto.getTimestamp() + " t="
 						// + time + ": gain = "
@@ -223,8 +167,7 @@ public class RoomServiceImpl implements RoomService {
 			}
 			roomEnergyUsage += deviceEnergyUsage;
 		}
-		return (roomEnergyUsage / 1000 / 3600); // this is in kWh //FIXME is it
-												// always 30.
+		return (roomEnergyUsage / 1000 / 3600); // this is in kWh //FIXME is it always 30?
 	}
 
 	// TODO Do we need this method, Pu?
@@ -402,6 +345,7 @@ public class RoomServiceImpl implements RoomService {
 	public void updateRoomMeasurementdata() {
 
 		for (Room room : roomDao.findAll()) {
+			//FIXME These methods time out. I don't know where the error is.
 			room.setEnergyUsageLastDay(getEnergyUsageByDay(room));
 			room.setEnergyUsageLastWeek(getEnergyUsageByWeek(room));
 			room.setEnergyUsageLastMonth(getEnergyUsageByMonth(room));
@@ -415,12 +359,14 @@ public class RoomServiceImpl implements RoomService {
 			// roomService.setLightsAccordingToPolicy(room);
 		}
 	}
+
 	@Override
-	public void turnOffLight(){
+	public void turnOffLight() {
 		// Go through each room in the building
 		for (Room room : roomDao.findAll()) {
-			
-			//If lighting is not allowed we turn of the light and continue to next room
+
+			// If lighting is not allowed we turn of the light and continue to
+			// next room
 			RuleSecurity securityPolicy = ruleService.getRoomSecurityPolicy(room);
 			if (!securityPolicy.getIsLightAllowed()) {
 				for (Device theDevice : room.getDevices()) {
@@ -430,7 +376,7 @@ public class RoomServiceImpl implements RoomService {
 				}
 				continue;
 			}
-			
+
 			// We want to know if there has been any room activity
 			boolean roomActivity = false;
 			// hence we look at each device and see if there has been any
@@ -444,7 +390,8 @@ public class RoomServiceImpl implements RoomService {
 				// Lights have different output (gain, state)we need to look at.
 				if (device.getForeignDeviceId().contains("light")) {
 					hasActivityOccured = deviceService.hasRegistreredActivity(device.getForeignDeviceId(), "gain", minutesBeforeLightShouldTurnOff);
-					// hasActivityOccured can be overridden, so store the result now
+					// hasActivityOccured can be overridden, so store the result
+					// now
 					if (hasActivityOccured) {
 						roomActivity = true;
 					}
@@ -464,7 +411,7 @@ public class RoomServiceImpl implements RoomService {
 			// if there has not been any room Activity then we shut off the
 			// lights.
 			if (!roomActivity) {
-				logger.debug(String.format("Turning of lights in room %s", room.getForeignRoomID()) );
+				logger.debug(String.format("Turning of lights in room %s", room.getForeignRoomID()));
 				for (Device theDevice : room.getDevices()) {
 					if (theDevice.getForeignDeviceId().contains("light")) {
 						deviceService.turnOffLight(theDevice.getForeignDeviceId());
@@ -497,14 +444,13 @@ public class RoomServiceImpl implements RoomService {
 			// Look up if the current light level should be adjusted.
 			RuleLux rule = ruleService.getRoomLightingPolicy(room, Float.parseFloat(light.getValue()));
 
-			// In case needs to be adjusted
+			// In case it needs to be adjusted
 			if (rule.getShouldAdjustLight()) {
 				Double recommendedLight = rule.getRecommendedLux();
 				Double actualLight = Double.parseDouble(light.getValue());
 
 				// Double adjustmentRatio = recommendedLight / actualLight;
-				Double adjustmentRatio = 2d; // FIXME do correct calculation
-												// here.
+				Double adjustmentRatio = 2d; // FIXME do correct calculation here. We need to find out by how much we shoudl adjust the light in the room
 
 				for (Device device : room.getDevices()) {
 					if (device.getForeignDeviceId().contains("light")) {
@@ -515,11 +461,21 @@ public class RoomServiceImpl implements RoomService {
 					}
 
 				}
-				// In case needs NOT to be adjusted we ignore
+				// In case it needs NOT to be adjusted we ignore
 			} else {
 				// do nothing...
 			}
 		}
+	}
+	private static Long convertTimestampStringToSeconds(String timestamp) {
+		Long result = 0l;
+		String format = "yyyy-MM-dd'T'HH:mm:ss";
+		try {
+			result = new SimpleDateFormat(format).parse(timestamp).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return result / 1000;
 	}
 
 }

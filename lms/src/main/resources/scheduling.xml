@@ -16,7 +16,7 @@
 
 	<bean id="getNewMeasurementsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="updateMeasurementsJob"/>
-	  <property name="cronExpression" value="0/30 * * * * ?"/>
+	  <property name="cronExpression" value="30 * * * * ?"/>
 	</bean>
 	
 	<!-- lighting schedule-->

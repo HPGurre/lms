@@ -19,4 +19,11 @@ public class RoomServiceTest {
 	public void test() {
 		assertEquals("This should be a messaged describing how the test failed", 1, 1);
 	}
+	
+	@Test
+	public void testUpdateMeasurements() {
+		roomService.updateRoomMeasurementdata();
+	}
+	
+	
 }

@@ -41,8 +41,8 @@ public class UpdateServiceImpl implements UpdateService {
 	public void initiateMeasurementUpdate() {
 		logger.debug("Updating local measurement data");
 		roomService.updateRoomMeasurementdata();
-		floorService.updateFloorMeasurementData();
-		buildingService.updateBuildingMeasurementData();
+		//floorService.updateFloorMeasurementData();
+		//buildingService.updateBuildingMeasurementData();
 	}
 
 	@Override

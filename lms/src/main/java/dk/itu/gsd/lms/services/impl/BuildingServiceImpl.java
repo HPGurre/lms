@@ -41,10 +41,13 @@ public class BuildingServiceImpl implements BuildingService {
 		Float result = 0F;
 		Building building = buildingDao.find(bid);
 		for (Floor floor : building.getFloors()) {
+			logger.debug("Floor is: "+result);
 			for (Room room : floor.getRooms()) {
-				result += room.getEnergyUsageLastDay();		
+				result += room.getEnergyUsageLastDay();	
+				logger.debug("Room is: "+result);
 			}	
 		}
+		logger.debug("Result is: "+result);
 		return result;
 	}
 
