@@ -10,6 +10,22 @@ public enum EnergyState {
 	private final int upperBound;
 	private final int lowerBound;
 	private String description;
+	public int getUpperBound() {
+		return upperBound;
+	}
+
+	public int getLowerBound() {
+		return lowerBound;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
 	private String displayName;
 
 	EnergyState(String displayName, String description, int lowerBound, int upperBound){

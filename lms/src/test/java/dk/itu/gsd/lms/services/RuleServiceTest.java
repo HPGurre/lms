@@ -28,7 +28,7 @@ public class RuleServiceTest {
 	
 	@Test
 	public void test1() {
-		System.out.println("Result is:"+ruleService.getRoomRecommendedLux(roomService.getRoomData(7L)));
+		System.out.println("Result is:"+ruleService.getRoomRecommendedLux(roomService.getRoomData(7L),200));
 		
 		assertEquals("This should be a messaged describing how the test failed", 1, 1);
 	}

@@ -20,4 +20,9 @@ public interface RoomService {
 	// Service method for serving content to android
 	public AbstractRoom getRoomData(Long RoomId);
 	
+	//Human comfort
+	public void adjustLight();
+	
+	
+	
 }

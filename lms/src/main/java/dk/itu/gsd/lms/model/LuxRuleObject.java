@@ -2,12 +2,12 @@ package dk.itu.gsd.lms.model;
 
 public class LuxRuleObject {
 
-	private Integer currentLux;
+	private Double currentLux;
 	private String roomActivity;
 	private String energyState;
-	private Integer RecommendedLux;
+	private Double RecommendedLux;
 	private Boolean ShouldAdjustLight;
-	public Integer getCurrentLux() {
+	public Double getCurrentLux() {
 		return currentLux;
 	}
 	public Boolean getShouldAdjustLight() {
@@ -16,7 +16,7 @@ public class LuxRuleObject {
 	public void setShouldAdjustLight(Boolean shouldAdjustLight) {
 		ShouldAdjustLight = shouldAdjustLight;
 	}
-	public void setCurrentLux(Integer currentLux) {
+	public void setCurrentLux(Double currentLux) {
 		this.currentLux = currentLux;
 	}
 	public String getRoomActivity() {
@@ -31,10 +31,10 @@ public class LuxRuleObject {
 	public void setEnergyState(String energyState) {
 		this.energyState = energyState;
 	}
-	public Integer getRecommendedLux() {
+	public Double getRecommendedLux() {
 		return RecommendedLux;
 	}
-	public void setRecommendedLux(Integer recommendedLux) {
+	public void setRecommendedLux(Double recommendedLux) {
 		RecommendedLux = recommendedLux;
 	}
 	

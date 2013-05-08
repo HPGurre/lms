@@ -23,7 +23,7 @@ public class RuleServiceImpl implements RuleService {
 	
 	@Autowired
 	private RoomService roomService;
-
+	
 	@Autowired
 	private StatelessKnowledgeSession ksession;
 	
@@ -34,7 +34,7 @@ public class RuleServiceImpl implements RuleService {
 		Calendar now = Calendar.getInstance(Locale.ENGLISH);
 		String strDateFormat = "EEEE";
 		SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat, Locale.ENGLISH);
-
+		
 		ScheduleRuleObject sro = new ScheduleRuleObject();
 		sro.setDay(sdf.format(now.getTime()).toUpperCase());
 		sro.setRoomType(room.whatRoomAmI());
@@ -46,10 +46,10 @@ public class RuleServiceImpl implements RuleService {
 	}
 
 	@Override
-	public LuxRuleObject getRoomRecommendedLux(AbstractRoom room) {
-	
+	public LuxRuleObject getRoomRecommendedLux(AbstractRoom room, double currentLight) {
+		//FIXME INSERT CORRECT DATA
 		LuxRuleObject lro = new LuxRuleObject();
-		lro.setCurrentLux(100);
+		lro.setCurrentLux(currentLight);
 		lro.setRoomActivity(RoomActivity.LOUNGE.getDescription().toUpperCase());
 		lro.setEnergyState(EnergyState.ABUNDANT.getDisplayName().toUpperCase());
 
@@ -59,6 +59,5 @@ public class RuleServiceImpl implements RuleService {
 		System.out.println(lro.getShouldAdjustLight());
 		return lro;
 	}
-
 
 }

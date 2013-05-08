@@ -19,13 +19,13 @@ public class DeviceServiceTest {
 	@Test
 	public void test() {
 		assertEquals("This should be a messaged describing how the test failed", 1, 1);
-		Boolean result = deviceService.toggleLight("room-1-light-2", 0.777f);
+		Boolean result = deviceService.adjustLight("room-1-light-2", 0.777f);
 		assertEquals("failed to set the light", true, result);
 	}
 	@Test(expected=IllegalArgumentException.class)
 	public void test1() {
 		assertEquals("This should be a messaged describing how the test failed", 1, 1);
-		deviceService.toggleLight("room-1-blind-2", 0.777f);
+		deviceService.adjustLight("room-1-blind-2", 0.777f);
 		fail("A exception should have been thrown");
 	}
 }

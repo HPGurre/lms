@@ -15,7 +15,7 @@
 		<drools:decisiontable-conf input-type="XLS" worksheet-name="Tables"  />	
 	</drools:resource>
 
- 	
+
  	<drools:kbase id="kbase">
 		<drools:resources>
 			<drools:resource ref="ScheduleRules"/>
@@ -48,5 +48,5 @@
 	
 	
 	
-	<drools:ksession kbase="kbase1" type="stateless" id="ksession1"/>
+	<drools:ksession kbase="kbase1" type="stateless" id="ksession1" />
 </beans>

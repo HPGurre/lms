@@ -7,5 +7,5 @@ public interface RuleService {
 
 	public int getRoomTimeout(AbstractRoom room);
 	
-	public LuxRuleObject getRoomRecommendedLux(AbstractRoom room);
+	public LuxRuleObject getRoomRecommendedLux(AbstractRoom room, double currentLux);
 }
