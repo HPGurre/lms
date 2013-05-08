@@ -1,5 +1,6 @@
 package dk.itu.gsd.lms.services.impl;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import dk.itu.gsd.lms.services.FloorService;
 
 @Service("floorService")
 public class FloorServiceImpl implements FloorService {
+	private static Logger logger = Logger.getLogger(FloorServiceImpl.class);
 
 	@Autowired
 	FloorDao floorDao;
@@ -19,8 +21,8 @@ public class FloorServiceImpl implements FloorService {
 		Float result = 0F;
 		Floor floor = floorDao.find(floorID);
 		for (AbstractRoom room : floor.getRooms()) {
-			result += room.getEnergyUsageLastDay();		
-		}		
+			result += room.getEnergyUsageLastDay();
+		}
 		return result;
 	}
 
@@ -29,8 +31,8 @@ public class FloorServiceImpl implements FloorService {
 		Float result = 0F;
 		Floor floor = floorDao.find(floorID);
 		for (AbstractRoom room : floor.getRooms()) {
-			result += room.getEnergyUsageLastWeek();		
-		}		
+			result += room.getEnergyUsageLastWeek();
+		}
 		return result;
 	}
 
@@ -39,9 +41,20 @@ public class FloorServiceImpl implements FloorService {
 		Float result = 0F;
 		Floor floor = floorDao.find(floorID);
 		for (AbstractRoom room : floor.getRooms()) {
-			result += room.getEnergyUsageLastMonth();		
-		}		
+			result += room.getEnergyUsageLastMonth();
+		}
 		return result;
+	}
+	
+	@Override
+	public void updateFloorMeasurementData() {
+		for (Floor floor : floorDao.findAll()) {
+			floor.setEnergyUsageLastDay(getEnergyUsageByDay(floor.getId()));
+			floor.setEnergyUsageLastWeek(getEnergyUsageByWeek(floor.getId()));
+			floor.setEnergyUsageLastMonth(getEnergyUsageByMonth(floor.getId()));
+			floorDao.save(floor);
+			logger.debug("Floor measurements has been updated");
+		}
 	}
 
 	@Override

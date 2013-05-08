@@ -1,5 +1,6 @@
 package dk.itu.gsd.lms.services.impl;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import dk.itu.gsd.lms.services.BuildingService;
 
 @Service("buildingService")
 public class BuildingServiceImpl implements BuildingService {
+	private static Logger logger = Logger.getLogger(BuildingServiceImpl.class);
 
 	@Autowired
 	BuildingAdapter buildingAdapter;
@@ -73,5 +75,16 @@ public class BuildingServiceImpl implements BuildingService {
 	@Override
 	public Building getBuildingData(Long roomId) {
 		return buildingDao.find(roomId);
+	}
+
+	@Override
+	public void updateBuildingMeasurementData() {
+		for (Building building : buildingDao.findAll()) {
+			building.setEnergyUsageLastDay(getEnergyUsageByDay(building.getId()));
+			building.setEnergyUsageLastWeek(getEnergyUsageByWeek(building.getId()));
+			building.setEnergyUsageLastMonth(getEnergyUsageByMonth(building.getId()));
+			buildingDao.save(building);
+			logger.debug("Building measurements has been updated");
+		}
 	}
 }

@@ -59,8 +59,6 @@ public class RuleServiceImpl implements RuleService {
 
 		ksession1.execute(Arrays.asList(new Object[] { lro }));
 		
-		System.out.println(lro.getRecommendedLux());
-		System.out.println(lro.getShouldAdjustLight());
 		return lro;
 	}
 	

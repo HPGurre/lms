@@ -107,9 +107,6 @@ public class DeviceAdapterImpl extends AbstractAdapter implements DeviceAdapter 
 		endDate.set(Calendar.MINUTE, 0);
 		String endDateAsString = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 		.format(endDate.getTime());
-		
-		System.out.println("START " + startDateAsString);
-		System.out.println("END " + endDateAsString);
 
 		// The following URL is an example of what is constructed
 		// http://gsd.itu.dk/api/user/measurement/?uuid=room-1-light-2-state
