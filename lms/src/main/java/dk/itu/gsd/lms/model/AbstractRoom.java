@@ -73,7 +73,7 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 	private Floor floor;
 	
 	@Column(name = "foreign_room_id", unique = true, nullable = false)
-	private Float foreignRoomID;
+	private String foreignRoomID;
 	
 	@Column(name = "energy_usage_day", unique = true)
 	private Float energyUsageLastDay;
@@ -100,11 +100,11 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 		this.floor = floor;
 	}
 
-	public Float getForeignRoomID() {
+	public String getForeignRoomID() {
 		return foreignRoomID;
 	}
 
-	public void setForeignRoomID(Float foreignRoomID) {
+	public void setForeignRoomID(String foreignRoomID) {
 		this.foreignRoomID = foreignRoomID;
 	}
 
