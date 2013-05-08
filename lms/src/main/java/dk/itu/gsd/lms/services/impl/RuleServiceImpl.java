@@ -14,6 +14,7 @@ import dk.itu.gsd.lms.model.EnergyState;
 import dk.itu.gsd.lms.model.LuxRuleObject;
 import dk.itu.gsd.lms.model.RoomActivity;
 import dk.itu.gsd.lms.model.ScheduleRuleObject;
+import dk.itu.gsd.lms.model.SecurityRuleObject;
 import dk.itu.gsd.lms.model.TimeRangeLabel;
 import dk.itu.gsd.lms.services.RoomService;
 import dk.itu.gsd.lms.services.RuleService;
@@ -29,8 +30,11 @@ public class RuleServiceImpl implements RuleService {
 	
 	@Autowired
 	private StatelessKnowledgeSession ksession1;
+	
+	@Autowired
+	private StatelessKnowledgeSession ksession2;
 
-	public int getRoomTimeout(AbstractRoom room) {
+	public ScheduleRuleObject getRoomSchedulePolicy(AbstractRoom room) {
 		Calendar now = Calendar.getInstance(Locale.ENGLISH);
 		String strDateFormat = "EEEE";
 		SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat, Locale.ENGLISH);
@@ -42,11 +46,11 @@ public class RuleServiceImpl implements RuleService {
 
 		ksession.execute(Arrays.asList(new Object[] { sro }));
 
-		return sro.getTimeoutLimit();
+		return sro;
 	}
 
 	@Override
-	public LuxRuleObject getRoomRecommendedLux(AbstractRoom room, double currentLight) {
+	public LuxRuleObject getRoomLightingPolicy(AbstractRoom room, double currentLight) {
 		//FIXME INSERT CORRECT DATA
 		LuxRuleObject lro = new LuxRuleObject();
 		lro.setCurrentLux(currentLight);
@@ -58,6 +62,18 @@ public class RuleServiceImpl implements RuleService {
 		System.out.println(lro.getRecommendedLux());
 		System.out.println(lro.getShouldAdjustLight());
 		return lro;
+	}
+	
+	@Override
+	public SecurityRuleObject getRoomSecurityPolicy(AbstractRoom room) {
+
+		SecurityRuleObject sro = new SecurityRuleObject();
+		sro.setRoomId(room.getForeignRoomID());
+		sro.setTimeRange(TimeRangeLabel.getLabelFromCalendar(Calendar.getInstance(Locale.ENGLISH)).toString());
+
+		ksession2.execute(Arrays.asList(new Object[] { sro }));
+		
+		return sro;
 	}
 
 }

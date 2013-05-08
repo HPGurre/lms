@@ -11,6 +11,8 @@ import dk.itu.gsd.lms.model.AbstractRoom;
 import dk.itu.gsd.lms.model.Building;
 import dk.itu.gsd.lms.model.Device;
 import dk.itu.gsd.lms.model.Floor;
+import dk.itu.gsd.lms.model.ScheduleRuleObject;
+import dk.itu.gsd.lms.model.SecurityRuleObject;
 import dk.itu.gsd.lms.services.BuildingService;
 import dk.itu.gsd.lms.services.DeviceService;
 import dk.itu.gsd.lms.services.FloorService;
@@ -83,6 +85,18 @@ public class UpdateServiceImpl implements UpdateService {
 		logger.debug("Turning off lights in inactive rooms");
 		// Go through each room in the building
 		for (AbstractRoom room : roomService.findAllRooms()) {
+			
+			//If lighting is not allowed we turn of the light and continue to next room
+			SecurityRuleObject securityPolicy = ruleService.getRoomSecurityPolicy(room);
+			if (!securityPolicy.getIsLightAllowed()) {
+				for (Device theDevice : room.getDevices()) {
+					if (theDevice.getForeignDeviceId().contains("light")) {
+						deviceService.turnOffLight(theDevice.getForeignDeviceId());
+					}
+				}
+				continue;
+			}
+			
 			// We want to know if there has been any room activity
 			boolean roomActivity = false;
 			// hence we look at each device and see if there has been any
@@ -90,13 +104,13 @@ public class UpdateServiceImpl implements UpdateService {
 			// schedule
 			for (Device device : room.getDevices()) {
 				boolean hasActivityOccured = false;
-				int minutesBeforeLightShouldTurnOff = ruleService.getRoomTimeout(room);
+				ScheduleRuleObject policy = ruleService.getRoomSchedulePolicy(room);
+				int minutesBeforeLightShouldTurnOff = policy.getTimeoutLimit();
 
 				// Lights have different output (gain, state)we need to look at.
 				if (device.getForeignDeviceId().contains("light")) {
 					hasActivityOccured = deviceService.hasRegistreredActivity(device.getForeignDeviceId(), "gain", minutesBeforeLightShouldTurnOff);
-					// hasActivityOccured can be overridden, so store the result
-					// now
+					// hasActivityOccured can be overridden, so store the result now
 					if (hasActivityOccured) {
 						roomActivity = true;
 					}
@@ -124,7 +138,6 @@ public class UpdateServiceImpl implements UpdateService {
 				}
 			}
 		}
-
 	}
 
 	@Override

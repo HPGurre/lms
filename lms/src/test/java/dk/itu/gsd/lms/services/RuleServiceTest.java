@@ -22,13 +22,13 @@ public class RuleServiceTest {
 	@Test
 	@Ignore
 	public void test() {
-		System.out.println("Result is:"+ruleService.getRoomTimeout(roomService.getRoomData(7L)));	
+		System.out.println("Result is:"+ruleService.getRoomSchedulePolicy(roomService.getRoomData(7L)));	
 		assertEquals("This should be a messaged describing how the test failed", 1, 1);
 	}
 	
 	@Test
 	public void test1() {
-		System.out.println("Result is:"+ruleService.getRoomRecommendedLux(roomService.getRoomData(7L),200));
+		System.out.println("Result is:"+ruleService.getRoomLightingPolicy(roomService.getRoomData(7L),200));
 		
 		assertEquals("This should be a messaged describing how the test failed", 1, 1);
 	}

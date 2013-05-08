@@ -16,6 +16,7 @@ import dk.itu.gsd.lms.model.AbstractRoom;
 import dk.itu.gsd.lms.model.Device;
 import dk.itu.gsd.lms.model.EnergyState;
 import dk.itu.gsd.lms.model.LuxRuleObject;
+import dk.itu.gsd.lms.model.SecurityRuleObject;
 import dk.itu.gsd.lms.services.DeviceService;
 import dk.itu.gsd.lms.services.RoomService;
 import dk.itu.gsd.lms.services.RuleService;
@@ -396,11 +397,23 @@ public class RoomServiceImpl implements RoomService {
 	public void adjustLight() {
 		//Go though each room
 		for (AbstractRoom room : roomDao.findAll()) {
+			
+			//If lighting is not allowed we turn of the light and continue to next room
+			SecurityRuleObject securityPolicy = ruleService.getRoomSecurityPolicy(room);
+			if (!securityPolicy.getIsLightAllowed()) {
+				for (Device theDevice : room.getDevices()) {
+					if (theDevice.getForeignDeviceId().contains("light")) {
+						deviceService.turnOffLight(theDevice.getForeignDeviceId());
+					}
+				}
+				continue;
+			}
+			
 			//Get the current light for the room
 			MeasurementDto light = roomAdapter.getCurrentRoomLight(room.getForeignRoomID());
 			
 			//Look up if the current light level should be adjusted.
-			LuxRuleObject rule = ruleService.getRoomRecommendedLux(room, Float.parseFloat(light.getValue()));
+			LuxRuleObject rule = ruleService.getRoomLightingPolicy(room, Float.parseFloat(light.getValue()));
 			
 			//In case needs to be adjusted
 			if (rule.getShouldAdjustLight()) {

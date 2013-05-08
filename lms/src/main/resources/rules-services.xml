@@ -46,7 +46,24 @@
 		</drools:configuration>
 	</drools:kbase>
 	
-	
-	
 	<drools:ksession kbase="kbase1" type="stateless" id="ksession1" />
+	
+	<!-- Security -->
+		<drools:resource id="SecurityRules" type="DTABLE" source="classpath:security-rules.xls">
+		<drools:decisiontable-conf input-type="XLS" worksheet-name="Tables"  />	
+	</drools:resource>
+	
+	<drools:kbase id="kbase2">
+		<drools:resources>
+			<drools:resource ref="SecurityRules"/>
+		</drools:resources>
+		<drools:configuration>
+			<drools:mbeans enabled="true" />
+			<drools:event-processing-mode mode="STREAM" />
+			<drools:multithread enabled="false"/>
+		</drools:configuration>
+	</drools:kbase>
+	
+	<drools:ksession kbase="kbase2" type="stateless" id="ksession2" />
+	
 </beans>
