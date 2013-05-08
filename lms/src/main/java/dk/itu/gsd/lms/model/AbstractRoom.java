@@ -27,6 +27,18 @@ public abstract class AbstractRoom extends HibernateModel implements Serializabl
 	
 	public abstract String whatRoomAmI();
 	
+	@Column(name = "activity_mode")
+	@Enumerated(EnumType.STRING)
+	private ActivityMode activityMode; 
+	
+	public ActivityMode getActivityMode() {
+		return activityMode;
+	}
+
+	public void setActivityMode(ActivityMode activityMode) {
+		this.activityMode = activityMode;
+	}
+
 	@Column(name = "security_mode")
 	@Enumerated(EnumType.STRING)
 	private SecurityMode securityMode;

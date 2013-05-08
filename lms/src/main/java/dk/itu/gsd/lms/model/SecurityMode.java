@@ -3,8 +3,8 @@ package dk.itu.gsd.lms.model;
 
 public enum SecurityMode {
 	ALLOWED ("Light Allowed", "Devices are handled."),
-	DISALLOWED ("Light Disallowed", "Devices are allowed. All events are unhandled."),
-	ALERT("Light Alert", "Notification for devices occur send to Alarm center");
+	DISALLOWED ("Light Disallowed", "Devices are allowed. All events are unhandled.");
+	//ALERT("Light Alert", "Notification for devices occur send to Alarm center");
 	
 	private String description;
 	private String modeName;

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import dk.itu.gsd.lms.model.AbstractRoom;
 import dk.itu.gsd.lms.model.EnergyState;
 import dk.itu.gsd.lms.model.LuxRuleObject;
-import dk.itu.gsd.lms.model.RoomActivity;
 import dk.itu.gsd.lms.model.ScheduleRuleObject;
 import dk.itu.gsd.lms.model.SecurityRuleObject;
 import dk.itu.gsd.lms.model.TimeRangeLabel;
@@ -51,11 +50,11 @@ public class RuleServiceImpl implements RuleService {
 
 	@Override
 	public LuxRuleObject getRoomLightingPolicy(AbstractRoom room, double currentLight) {
-		//FIXME INSERT CORRECT DATA
+		
 		LuxRuleObject lro = new LuxRuleObject();
 		lro.setCurrentLux(currentLight);
-		lro.setRoomActivity(RoomActivity.LOUNGE.getDescription().toUpperCase());
-		lro.setEnergyState(EnergyState.ABUNDANT.getDisplayName().toUpperCase());
+		lro.setRoomActivity(room.getActivityMode().getDisplayName().toUpperCase());
+		lro.setEnergyState(EnergyState.ABUNDANT.getDisplayName().toUpperCase());//FIXME INSERT CORRECT ENERGYSTATE
 
 		ksession1.execute(Arrays.asList(new Object[] { lro }));
 		
