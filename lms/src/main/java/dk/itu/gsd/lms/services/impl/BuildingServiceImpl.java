@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import dk.itu.gsd.lms.dao.BuildingDao;
 import dk.itu.gsd.lms.integration.consumed.building.BuildingAdapter;
-import dk.itu.gsd.lms.model.AbstractRoom;
+import dk.itu.gsd.lms.model.Room;
 import dk.itu.gsd.lms.model.Building;
 import dk.itu.gsd.lms.model.Floor;
 import dk.itu.gsd.lms.services.BuildingService;
@@ -41,7 +41,7 @@ public class BuildingServiceImpl implements BuildingService {
 		Float result = 0F;
 		Building building = buildingDao.find(bid);
 		for (Floor floor : building.getFloors()) {
-			for (AbstractRoom room : floor.getRooms()) {
+			for (Room room : floor.getRooms()) {
 				result += room.getEnergyUsageLastDay();		
 			}	
 		}
@@ -53,7 +53,7 @@ public class BuildingServiceImpl implements BuildingService {
 		Float result = 0F;
 		Building building = buildingDao.find(bid);
 		for (Floor floor : building.getFloors()) {
-			for (AbstractRoom room : floor.getRooms()) {
+			for (Room room : floor.getRooms()) {
 				result += room.getEnergyUsageLastWeek();		
 			}	
 		}
@@ -65,7 +65,7 @@ public class BuildingServiceImpl implements BuildingService {
 		Float result = 0F;
 		Building building = buildingDao.find(bid);
 		for (Floor floor : building.getFloors()) {
-			for (AbstractRoom room : floor.getRooms()) {
+			for (Room room : floor.getRooms()) {
 				result += room.getEnergyUsageLastMonth();		
 			}	
 		}

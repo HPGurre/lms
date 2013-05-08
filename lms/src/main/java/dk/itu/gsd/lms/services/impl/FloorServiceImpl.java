@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dk.itu.gsd.lms.dao.FloorDao;
-import dk.itu.gsd.lms.model.AbstractRoom;
+import dk.itu.gsd.lms.model.Room;
 import dk.itu.gsd.lms.model.Floor;
 import dk.itu.gsd.lms.services.FloorService;
 
@@ -20,7 +20,7 @@ public class FloorServiceImpl implements FloorService {
 	public Float getEnergyUsageByDay(Long floorID) {
 		Float result = 0F;
 		Floor floor = floorDao.find(floorID);
-		for (AbstractRoom room : floor.getRooms()) {
+		for (Room room : floor.getRooms()) {
 			result += room.getEnergyUsageLastDay();
 		}
 		return result;
@@ -30,7 +30,7 @@ public class FloorServiceImpl implements FloorService {
 	public Float getEnergyUsageByWeek(Long floorID) {
 		Float result = 0F;
 		Floor floor = floorDao.find(floorID);
-		for (AbstractRoom room : floor.getRooms()) {
+		for (Room room : floor.getRooms()) {
 			result += room.getEnergyUsageLastWeek();
 		}
 		return result;
@@ -40,7 +40,7 @@ public class FloorServiceImpl implements FloorService {
 	public Float getEnergyUsageByMonth(Long floorID) {
 		Float result = 0F;
 		Floor floor = floorDao.find(floorID);
-		for (AbstractRoom room : floor.getRooms()) {
+		for (Room room : floor.getRooms()) {
 			result += room.getEnergyUsageLastMonth();
 		}
 		return result;

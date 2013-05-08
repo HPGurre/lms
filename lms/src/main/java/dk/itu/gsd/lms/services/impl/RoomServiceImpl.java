@@ -15,11 +15,11 @@ import dk.itu.gsd.lms.dao.RoomDao;
 import dk.itu.gsd.lms.integration.consumed.building.DeviceAdapter;
 import dk.itu.gsd.lms.integration.consumed.building.RoomAdapter;
 import dk.itu.gsd.lms.integration.consumed.building.model.MeasurementDto;
-import dk.itu.gsd.lms.model.AbstractRoom;
+import dk.itu.gsd.lms.model.Room;
 import dk.itu.gsd.lms.model.Device;
-import dk.itu.gsd.lms.model.LuxRuleObject;
-import dk.itu.gsd.lms.model.ScheduleRuleObject;
-import dk.itu.gsd.lms.model.SecurityRuleObject;
+import dk.itu.gsd.lms.model.RuleLux;
+import dk.itu.gsd.lms.model.RuleSchedule;
+import dk.itu.gsd.lms.model.RuleSecurity;
 import dk.itu.gsd.lms.services.DeviceService;
 import dk.itu.gsd.lms.services.RoomService;
 import dk.itu.gsd.lms.services.RuleService;
@@ -65,7 +65,7 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public Float getEnergyUsageByDay(AbstractRoom room) {
+	public Float getEnergyUsageByDay(Room room) {
 		Float roomEnergyUsage = 0.0f;
 		Long time = (long) 0;
 		Long time2 = (long) 0;
@@ -118,7 +118,7 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public Float getEnergyUsageByWeek(AbstractRoom room) {
+	public Float getEnergyUsageByWeek(Room room) {
 		Float roomEnergyUsage = 0.0f;
 		Long time = (long) 0;
 		Long time2 = (long) 0;
@@ -174,7 +174,7 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public Float getEnergyUsageByMonth(AbstractRoom room) {
+	public Float getEnergyUsageByMonth(Room room) {
 		Float roomEnergyUsage = 0.0f;
 		Long time = (long) 0;
 		Long time2 = (long) 0;
@@ -394,14 +394,14 @@ public class RoomServiceImpl implements RoomService {
 	// }
 
 	@Override
-	public AbstractRoom getRoomData(Long roomId) {
+	public Room getRoomData(Long roomId) {
 		return roomDao.find(roomId);
 	}
 
 	@Override
 	public void updateRoomMeasurementdata() {
 
-		for (AbstractRoom room : roomDao.findAll()) {
+		for (Room room : roomDao.findAll()) {
 			room.setEnergyUsageLastDay(getEnergyUsageByDay(room));
 			room.setEnergyUsageLastWeek(getEnergyUsageByWeek(room));
 			room.setEnergyUsageLastMonth(getEnergyUsageByMonth(room));
@@ -418,10 +418,10 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public void turnOffLight(){
 		// Go through each room in the building
-		for (AbstractRoom room : roomDao.findAll()) {
+		for (Room room : roomDao.findAll()) {
 			
 			//If lighting is not allowed we turn of the light and continue to next room
-			SecurityRuleObject securityPolicy = ruleService.getRoomSecurityPolicy(room);
+			RuleSecurity securityPolicy = ruleService.getRoomSecurityPolicy(room);
 			if (!securityPolicy.getIsLightAllowed()) {
 				for (Device theDevice : room.getDevices()) {
 					if (theDevice.getForeignDeviceId().contains("light")) {
@@ -438,7 +438,7 @@ public class RoomServiceImpl implements RoomService {
 			// schedule
 			for (Device device : room.getDevices()) {
 				boolean hasActivityOccured = false;
-				ScheduleRuleObject policy = ruleService.getRoomSchedulePolicy(room);
+				RuleSchedule policy = ruleService.getRoomSchedulePolicy(room);
 				int minutesBeforeLightShouldTurnOff = policy.getTimeoutLimit();
 
 				// Lights have different output (gain, state)we need to look at.
@@ -477,11 +477,11 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public void adjustLight() {
 		// Go though each room
-		for (AbstractRoom room : roomDao.findAll()) {
+		for (Room room : roomDao.findAll()) {
 
 			// If lighting is not allowed we turn of the light and continue to
 			// next room
-			SecurityRuleObject securityPolicy = ruleService.getRoomSecurityPolicy(room);
+			RuleSecurity securityPolicy = ruleService.getRoomSecurityPolicy(room);
 			if (!securityPolicy.getIsLightAllowed()) {
 				for (Device theDevice : room.getDevices()) {
 					if (theDevice.getForeignDeviceId().contains("light")) {
@@ -495,7 +495,7 @@ public class RoomServiceImpl implements RoomService {
 			MeasurementDto light = roomAdapter.getCurrentRoomLight(room.getForeignRoomID());
 
 			// Look up if the current light level should be adjusted.
-			LuxRuleObject rule = ruleService.getRoomLightingPolicy(room, Float.parseFloat(light.getValue()));
+			RuleLux rule = ruleService.getRoomLightingPolicy(room, Float.parseFloat(light.getValue()));
 
 			// In case needs to be adjusted
 			if (rule.getShouldAdjustLight()) {

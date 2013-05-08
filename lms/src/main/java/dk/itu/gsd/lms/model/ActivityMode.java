@@ -1,13 +1,13 @@
 package dk.itu.gsd.lms.model;
 
 public enum ActivityMode {
-	VISUAL_INTENSIVE_MODE("Visual intensive work"), 
-	OFFICE_MODE("Office"),
-	LECTURE_MODE("Lecture"),
+	BATHROOM_MODE("Bathroom"), 
 	HALLWAY_MODE("Hallway"),
-	BATHROOM_MODE("Bathroom"),
+	LECTURE_MODE("Lecture"),
 	LOUNGE_MODE("Lounge"),
-	PARTY_MODE("Party");
+	OFFICE_MODE("Office"),
+	PARTY_MODE("Party"),
+	VISUAL_INTENSIVE_MODE("Visual intensive work");
 	
 	private String displayName;
 	

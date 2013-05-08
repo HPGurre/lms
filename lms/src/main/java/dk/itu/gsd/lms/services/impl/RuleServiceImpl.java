@@ -9,12 +9,12 @@ import org.drools.runtime.StatelessKnowledgeSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dk.itu.gsd.lms.model.AbstractRoom;
+import dk.itu.gsd.lms.model.Room;
 import dk.itu.gsd.lms.model.EnergyState;
-import dk.itu.gsd.lms.model.LuxRuleObject;
-import dk.itu.gsd.lms.model.ScheduleRuleObject;
-import dk.itu.gsd.lms.model.SecurityRuleObject;
-import dk.itu.gsd.lms.model.TimeRangeLabel;
+import dk.itu.gsd.lms.model.RuleLux;
+import dk.itu.gsd.lms.model.RuleSchedule;
+import dk.itu.gsd.lms.model.RuleSecurity;
+import dk.itu.gsd.lms.model.TimeOfDay;
 import dk.itu.gsd.lms.services.RoomService;
 import dk.itu.gsd.lms.services.RuleService;
 
@@ -33,15 +33,15 @@ public class RuleServiceImpl implements RuleService {
 	@Autowired
 	private StatelessKnowledgeSession ksession2;
 
-	public ScheduleRuleObject getRoomSchedulePolicy(AbstractRoom room) {
+	public RuleSchedule getRoomSchedulePolicy(Room room) {
 		Calendar now = Calendar.getInstance(Locale.ENGLISH);
 		String strDateFormat = "EEEE";
 		SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat, Locale.ENGLISH);
 		
-		ScheduleRuleObject sro = new ScheduleRuleObject();
+		RuleSchedule sro = new RuleSchedule();
 		sro.setDay(sdf.format(now.getTime()).toUpperCase());
 		sro.setRoomType(room.whatRoomAmI());
-		sro.setTimeRange(TimeRangeLabel.getLabelFromCalendar(now).toString());
+		sro.setTimeRange(TimeOfDay.getTimeOfDayFromCalendar(now).toString());
 
 		ksession.execute(Arrays.asList(new Object[] { sro }));
 
@@ -49,9 +49,9 @@ public class RuleServiceImpl implements RuleService {
 	}
 
 	@Override
-	public LuxRuleObject getRoomLightingPolicy(AbstractRoom room, double currentLight) {
+	public RuleLux getRoomLightingPolicy(Room room, double currentLight) {
 		
-		LuxRuleObject lro = new LuxRuleObject();
+		RuleLux lro = new RuleLux();
 		lro.setCurrentLux(currentLight);
 		lro.setRoomActivity(room.getActivityMode().getDisplayName().toUpperCase());
 		lro.setEnergyState(EnergyState.ABUNDANT.getDisplayName().toUpperCase());//FIXME INSERT CORRECT ENERGYSTATE
@@ -62,11 +62,11 @@ public class RuleServiceImpl implements RuleService {
 	}
 	
 	@Override
-	public SecurityRuleObject getRoomSecurityPolicy(AbstractRoom room) {
+	public RuleSecurity getRoomSecurityPolicy(Room room) {
 
-		SecurityRuleObject sro = new SecurityRuleObject();
+		RuleSecurity sro = new RuleSecurity();
 		sro.setRoomId(room.getForeignRoomID());
-		sro.setTimeRange(TimeRangeLabel.getLabelFromCalendar(Calendar.getInstance(Locale.ENGLISH)).toString());
+		sro.setTimeRange(TimeOfDay.getTimeOfDayFromCalendar(Calendar.getInstance(Locale.ENGLISH)).toString());
 
 		ksession2.execute(Arrays.asList(new Object[] { sro }));
 		
