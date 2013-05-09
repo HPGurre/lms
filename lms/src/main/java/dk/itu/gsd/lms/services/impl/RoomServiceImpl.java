@@ -15,6 +15,7 @@ import dk.itu.gsd.lms.dao.RoomDao;
 import dk.itu.gsd.lms.integration.consumed.building.DeviceAdapter;
 import dk.itu.gsd.lms.integration.consumed.building.RoomAdapter;
 import dk.itu.gsd.lms.integration.consumed.building.model.MeasurementDto;
+import dk.itu.gsd.lms.model.EnergyState;
 import dk.itu.gsd.lms.model.Room;
 import dk.itu.gsd.lms.model.Device;
 import dk.itu.gsd.lms.model.RuleLux;
@@ -23,6 +24,7 @@ import dk.itu.gsd.lms.model.RuleSecurity;
 import dk.itu.gsd.lms.services.DeviceService;
 import dk.itu.gsd.lms.services.RoomService;
 import dk.itu.gsd.lms.services.RuleService;
+
 
 /**
  * gain * wattage = value in watt
@@ -170,172 +172,73 @@ public class RoomServiceImpl implements RoomService {
 		return (roomEnergyUsage / 1000 / 3600); // this is in kWh //FIXME is it always 30?
 	}
 
-	// TODO Do we need this method, Pu?
-	// public int getActivityLevel(AbstractRoom room) {
-	// int activityLevel = -1;
-	//
-	// Calendar now = Calendar.getInstance();
-	// Calendar fiveMinsAgo = Calendar.getInstance();
-	// fiveMinsAgo.add(Calendar.MINUTE, -5);
-	// // look up room devices.
-	// for (Device device : room.getDevices()) { // loop over all devices in
-	// // room
-	// String id = device.getForeignDeviceId();
-	//
-	// // if (id.contains("light")) {
-	// List<MeasurementDto> measurements =
-	// deviceAdapter.getDeviceEnergyUsageByPeriod(id, "gain", fiveMinsAgo, now);
-	//
-	// if (activityLevel < 1 && measurements.size() == 0) {
-	// activityLevel = 0;
-	// } else {
-	// activityLevel = 1;
-	// }
-	// }
-	//
-	// return activityLevel; // integer indicating activity in room = 0 if no
-	// // activity.
-	// }
+	// TODO Do we need this method, Pu? YES
+	// Explanation: return the adjustment of power level (gain) for each lamp in the room in order to
+	// fulfil minimum luminance level in the room.
+	 public double getLampAdjustment(Room room) {
+		  double absPowerAdjustment = 0.0f; // extra luminance supplied by lamps (can be negative!)
+		 
+		 double minRoomLum = 0.0f; // minimum luminance in room based on policy
+		 // model (lumens [lm])
+		 
+		 int noOfLamps = 0; // number of lamps in room
+		 EnergyState energyState = EnergyState.NORMAL;
+		 //int activityLevel = 0; // activity level of room
+		 double adjustPowerFactor = 0d;
+		 double roomsize = 5d; //5 m2
+	
+		 Calendar now = Calendar.getInstance();
+	
+	 // set luminous efficacy
+	 // source: http://www.rapidtables.com/calc/light/how-lux-to-watt.htm
+	 // Light type Typical luminous efficacy(lumens/watt)
+	 // Tungsten incandescent light bulb 12.5-17.5 lm/W
+	 // Halogen lamp 16-24 lm/W
+	 // Fluorescent lamp 45-75 lm/W
+	 // LED lamp 30-90 lm/W
+	 // Metal halide lamp 75-100 lm/W
+	 // High pressure sodium vapor lamp 85-150 lm/W
+	 // Low pressure sodium vapor lamp 100-200 lm/W
+	 // Mercury vapor lamp 35-65 lm/W
+	 double efficacyLamp = 45f; // Assuming value based on table above: efficacy of lamps in room [lm/W]
+	 
+	 // get number of lamps in room
+	 for (Device device : room.getDevices()) { // loop over all devices in
+		 // room
+		 String id = device.getForeignDeviceId();
+	 	if (id.contains("light")) {
+	 		noOfLamps = noOfLamps + 1;
+	 	}
+	 }
+	
+	 // retrieve minimum luminous flux (lumens) level required by policy model first, get energy state of building
+	 energyState = EnergyState.NORMAL;	 
+	 
+	 // Get the current light for the room
+ 	 MeasurementDto light = roomAdapter.getCurrentRoomLight(room.getForeignRoomID());
+	 Float actualLight = Float.parseFloat(light.getValue());  // assume this is lumens (= k photons) = how much light get through window + light from lamps
 
-	// TODO Do we need this method, Pu?
-	// return the power requirements for each lamp in the room in order to
-	// Fulfil minimum lux level in the room
-	// public float getLampMinPower(AbstractRoom room) {
-	// float minPower = 0.0f; // return value
-	// float minLampLum = 0.0f; // minimum luminance supplied by lamps
-	// float lmSun = 0.0f; // luminance of sun
-	// float sun = 0.0f; // value from sun model
-	// float cloud = 0.0f; // value from cloud model
-	// float minRoomLum = 0.0f; // minimum luminance in room based on policy
-	// // model (lumens [lm])
-	// float windowSize = 0.0f; // size of windows in room
-	// float blindState = 0.0f; // state of window blinds
-	// int noOfLamps = 0; // number of lamps in room
-	// EnergyState energyState = EnergyState.NORMAL;
-	// int activityLevel = 0; // activity level of room
-	// int lightingBlockId = 0; // lighting block id
-	//
-	// Calendar now = Calendar.getInstance();
-	//
-	// // set luminous efficacy
-	// // source: http://www.rapidtables.com/calc/light/how-lux-to-watt.htm
-	// // Light type Typical luminous efficacy(lumens/watt)
-	// // Tungsten incandescent light bulb 12.5-17.5 lm/W
-	// // Halogen lamp 16-24 lm/W
-	// // Fluorescent lamp 45-75 lm/W
-	// // LED lamp 30-90 lm/W
-	// // Metal halide lamp 75-100 lm/W
-	// // High pressure sodium vapor lamp 85-150 lm/W
-	// // Low pressure sodium vapor lamp 100-200 lm/W
-	// // Mercury vapor lamp 35-65 lm/W
-	// float efficacyLamp = 45f; // efficacy of lamps in room [lm/W]
-	//
-	// // assume no blinds
-	//
-	// // retrieve value of sun model
-	//
-	// // retrieve value of cloud model
-	//
-	// for (Device device : room.getDevices()) { // loop over all devices in
-	// // room
-	//
-	// String id = device.getForeignDeviceId();
-	//
-	// if (id.contains("blind")) {
-	//
-	// // get window size from building simulator
-	// windowSize = 5.0f;
-	//
-	// // retrieve sun model from building simulator
-	// sun = 1.0f;
-	//
-	// // retrieve cloud model from building simulator
-	// cloud = 0.2f;
-	//
-	// // retrieve value of blind state
-	// List<MeasurementDto> measurements =
-	// deviceAdapter.getDeviceEnergyUsageByNumber(id, "setpoint", now, 1);
-	// blindState = Float.parseFloat(measurements.get(0).getValue());
-	// System.out.println("Blind state = " + blindState);
-	//
-	// // update luminance from sun/cloud model through window
-	// lmSun = lmSun + blindState * windowSize * sun * (1f - cloud); // luminous
-	// // flux
-	// // from
-	// // windows
-	// // (lm)
-	// }
-	//
-	// }
-	//
-	// // get number of lamps in room
-	// for (Device device : room.getDevices()) { // loop over all devices in
-	// // room
-	// String id = device.getForeignDeviceId();
-	// if (id.contains("light")) {
-	// noOfLamps = noOfLamps + 1;
-	// }
-	// }
-	//
-	// // retrieve minimum luminous flux (lumens) level required by policy
-	// // model
-	// // first, get energy state of building
-	// energyState = EnergyState.NORMAL;
-	// // then, get activity level
-	// activityLevel = this.getActivityLevel(room);
-	// // and get lighting block id
-	// lightingBlockId = 1;
-	// // finally, look up minimum luminance value in table
-	// minRoomLum = 300.0f;
-	//
-	// // calculate minimum luminous flux (lumens) to be supplied by each lamp
-	// minLampLum = Math.max(0f, minRoomLum - lmSun) / noOfLamps;
-	//
-	// // convert from luminous flux (lumens) to power (W)
-	// minPower = minLampLum / efficacyLamp;
-	//
-	// System.out.println("no of lamps = " + noOfLamps);
-	// System.out.println("luminousity of sun-cloud-blinds = " + lmSun);
-	//
-	// // return minimum power required by each lamp in the room in W
-	// return minPower;
-	// }
-	// TODO Do we need this, Pu?
-	// // Toggle state of lamps to fulfil minimum lux level in the room
-	// public void setLightsAccordingToPolicy(AbstractRoom room) {
-	// int wattage = 0;
-	// float gain = 0f;
-	// float minPower = 0f;
-	//
-	// // Calendar now = Calendar.getInstance();
-	//
-	// minPower = this.getLampMinPower(room);
-	// //
-	// for (Device device : room.getDevices()) { // loop over all devices in
-	// // room
-	// String id = device.getForeignDeviceId();
-	// if (id.contains("light")) {
-	// // retrieve value of max power (wattage)
-	// wattage = 60;
-	// gain = Math.min(1f, minPower / wattage);
-	// System.out.println("Lamp state = " + gain);
-	// // change state of lamp
-	// deviceService.adjustLight(id, gain);
-	// /**
-	// ** Retrieving measured after set the state: Not working yet. My
-	// * guess is duration of time. currently implemented as
-	// * retrieving right after the state is changed.
-	// */
-	// // List<MeasurementDto> measurements =
-	// // roomAdapter.getDeviceEnergyUsageByNumber(id, "gain", now,1);
-	// // float lampstate =
-	// // Float.parseFloat(measurements.get(0).getValue());
-	// // System.out.println("Measured Lamp state = " + lampstate);
-	// }
-	// }
-	//
-	// }
+	// Look up if the current light level should be adjusted.
+	RuleLux rule = ruleService.getRoomLightingPolicy(room, Float.parseFloat(light.getValue()));
 
+	// finally, look up minimum lux value in table and multiply by room size to get minimum luminance requirement (in lumens = lux*m2)
+	minRoomLum = rule.getRecommendedLux() * roomsize;			//lumens
+	
+	 // calculate extra light to be supplied by each lamp
+	 absPowerAdjustment = (minRoomLum - actualLight) / noOfLamps;
+	
+	 // convert from luminous flux (lumens) to power (W) -- assume all lamps have max power = 60 W
+	 adjustPowerFactor = absPowerAdjustment / efficacyLamp / 60.0f ;
+	
+	 System.out.println("no of lamps = " + noOfLamps);
+	 System.out.println("Actual light = " + actualLight);
+	 System.out.println("Min light = " + minRoomLum);
+	 System.out.println("absPowerAdjustment = " + absPowerAdjustment);
+	 System.out.println("adjustPowerFactor = " + adjustPowerFactor);
+	 // Note: return minimum power required by each lamp in the room in W
+	 return adjustPowerFactor;
+	 }
+	
 	@Override
 	public Room getRoomData(Long roomId) {
 		return roomDao.find(roomId);
@@ -351,12 +254,6 @@ public class RoomServiceImpl implements RoomService {
 			room.setEnergyUsageLastMonth(getEnergyUsageByMonth(room));
 			roomDao.save(room);
 
-			// TODO Do we need this, Pu?.
-			// test getLampMinPower function
-			// System.out.println("Lamp min power = " +
-			// roomService.getLampMinPower(room));
-			// change state of lamps according to the policy model
-			// roomService.setLightsAccordingToPolicy(room);
 		}
 	}
 
@@ -379,9 +276,7 @@ public class RoomServiceImpl implements RoomService {
 
 			// We want to know if there has been any room activity
 			boolean roomActivity = false;
-			// hence we look at each device and see if there has been any
-			// activity in the last x minutes, where x is taken from the
-			// schedule
+			// hence we look at each device and see if there has been any activity in the last x minutes, where x is taken from the schedule.
 			for (Device device : room.getDevices()) {
 				boolean hasActivityOccured = false;
 				RuleSchedule policy = ruleService.getRoomSchedulePolicy(room);
@@ -390,8 +285,7 @@ public class RoomServiceImpl implements RoomService {
 				// Lights have different output (gain, state)we need to look at.
 				if (device.getForeignDeviceId().contains("light")) {
 					hasActivityOccured = deviceService.hasRegistreredActivity(device.getForeignDeviceId(), "gain", minutesBeforeLightShouldTurnOff);
-					// hasActivityOccured can be overridden, so store the result
-					// now
+					// hasActivityOccured can be overridden, so store the result now.
 					if (hasActivityOccured) {
 						roomActivity = true;
 					}
@@ -408,8 +302,7 @@ public class RoomServiceImpl implements RoomService {
 				}
 			}
 
-			// if there has not been any room Activity then we shut off the
-			// lights.
+			// if there has not been any room Activity then we shut off the lights.
 			if (!roomActivity) {
 				logger.debug(String.format("Turning of lights in room %s", room.getForeignRoomID()));
 				for (Device theDevice : room.getDevices()) {
@@ -424,6 +317,7 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public void adjustLight() {
 		// Go though each room
+		
 		for (Room room : roomDao.findAll()) {
 
 			// If lighting is not allowed we turn of the light and continue to
@@ -440,24 +334,27 @@ public class RoomServiceImpl implements RoomService {
 
 			// Get the current light for the room
 			MeasurementDto light = roomAdapter.getCurrentRoomLight(room.getForeignRoomID());
+			
+			// Double adjustmentRatio 
+			Double lampAdjustment = (double) this.getLampAdjustment(room); // FIXME do correct calculation here. We need to find out by how much we should adjust the light in the room
 
 			// Look up if the current light level should be adjusted.
 			RuleLux rule = ruleService.getRoomLightingPolicy(room, Float.parseFloat(light.getValue()));
 
 			// In case it needs to be adjusted
 			if (rule.getShouldAdjustLight()) {
-				Double recommendedLight = rule.getRecommendedLux();
-				Double actualLight = Double.parseDouble(light.getValue());
+				//Double recommendedLight = rule.getRecommendedLux();			//lux
+				//minimumLight = recommendedLight * roomsize;
+				//Double actualLight = Double.parseDouble(light.getValue());  //lumens or photons = how much light get through the room
 
-				// Double adjustmentRatio = recommendedLight / actualLight;
-				Double adjustmentRatio = 2d; // FIXME do correct calculation here. We need to find out by how much we shoudl adjust the light in the room
-
+				
 				for (Device device : room.getDevices()) {
 					if (device.getForeignDeviceId().contains("light")) {
 						MeasurementDto currentGainMeasurement = deviceAdapter.getLatestDeviceMeasurement(device.getForeignDeviceId(), "gain");
 
-						Double newGainValue = Double.valueOf(currentGainMeasurement.getValue()) * adjustmentRatio;
-						deviceAdapter.adjustLight(device.getForeignDeviceId(), newGainValue);
+						Double newGainValue = Double.valueOf(currentGainMeasurement.getValue()) + lampAdjustment; //increase or decrease gain value
+						newGainValue = Math.min(1d, Math.max(0d, newGainValue)); //make sure value is between 0 and 1
+						deviceAdapter.adjustLight(device.getForeignDeviceId(), newGainValue);  //adjust lamp setting
 					}
 
 				}

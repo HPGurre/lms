@@ -11,7 +11,7 @@ public interface RoomService {
 	
 //	TODO Remove these?
 //	public int getActivityLevel(AbstractRoom room);
-//	public float getLampMinPower(AbstractRoom room);
+	public double getLampAdjustment(Room room);
 //	public void setLightsAccordingToPolicy(AbstractRoom room);
 	
 	// Service method for serving content to android
