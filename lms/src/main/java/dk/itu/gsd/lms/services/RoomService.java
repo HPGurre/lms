@@ -8,6 +8,8 @@ public interface RoomService {
 	public Float getEnergyUsageByDay(Room room);
 	public Float getEnergyUsageByWeek(Room room);
 	public Float getEnergyUsageByMonth(Room room);
+	
+//	TODO Remove these?
 //	public int getActivityLevel(AbstractRoom room);
 //	public float getLampMinPower(AbstractRoom room);
 //	public void setLightsAccordingToPolicy(AbstractRoom room);
