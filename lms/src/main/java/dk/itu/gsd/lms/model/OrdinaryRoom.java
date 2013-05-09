@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("O")
-public class OrdinaryRoom extends AbstractRoom {
+public class OrdinaryRoom extends Room {
 	private static final long serialVersionUID = 2872206990743675505L;
 
 	@Override

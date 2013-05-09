@@ -15,6 +15,12 @@ import javax.persistence.Version;
 public abstract class HibernateModel implements Serializable {
 
 	/**
+	 * Time of object creation
+	 */
+	@Column(name = "created")
+	private Calendar created;
+
+	/**
 	 * Hibernate version control number.
 	 */
 	@Version
@@ -28,12 +34,6 @@ public abstract class HibernateModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
-
-	/**
-	 * Time of object creation
-	 */
-	@Column(name = "created")
-	private Calendar created;
 
 	/**
 	 * Time of object update
@@ -55,12 +55,19 @@ public abstract class HibernateModel implements Serializable {
 	}
 
 	/**
-	 * Sets the time of creation
+	 * Gets the hbmVersion.
 	 * 
-	 * @param created the time of creation
+	 * @return the hbmVersion
 	 */
-	public void setCreated(Calendar created) {
-		this.created = created;
+	public int getHbmVersion() {
+		return hbmVersion;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
 	}
 
 	/**
@@ -75,19 +82,10 @@ public abstract class HibernateModel implements Serializable {
 	/**
 	 * Sets the time of creation
 	 * 
-	 * @param updated the time of the update
+	 * @param created the time of creation
 	 */
-	public void setUpdated(Calendar updated) {
-		this.updated = updated;
-	}
-
-	/**
-	 * Gets the hbmVersion.
-	 * 
-	 * @return the hbmVersion
-	 */
-	public int getHbmVersion() {
-		return hbmVersion;
+	public void setCreated(Calendar created) {
+		this.created = created;
 	}
 
 	/**
@@ -100,16 +98,18 @@ public abstract class HibernateModel implements Serializable {
 	}
 
 	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
 	 * @param id the id to set
 	 */
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	/**
+	 * Sets the time of creation
+	 * 
+	 * @param updated the time of the update
+	 */
+	public void setUpdated(Calendar updated) {
+		this.updated = updated;
 	}
 }

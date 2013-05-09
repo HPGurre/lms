@@ -1,6 +1,6 @@
 package dk.itu.gsd.lms.integration.exposed.room;
 
-import dk.itu.gsd.lms.model.AbstractRoom;
+import dk.itu.gsd.lms.model.Room;
 import dk.itu.gsd.lms.model.EnergyState;
 /**
  * 
@@ -9,9 +9,8 @@ import dk.itu.gsd.lms.model.EnergyState;
  */
 public class RoomTranslater {
 
-	public RoomDto translate(AbstractRoom room) {
+	public RoomDto translate(Room room) {
 		RoomDto dto = new RoomDto();
-		
 		
 		dto.setDailyEnergyUsage(room.getEnergyUsageLastDay());
 		dto.setWeeklyEnergyUsage(room.getEnergyUsageLastWeek());

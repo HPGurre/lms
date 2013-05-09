@@ -10,7 +10,6 @@ import dk.itu.gsd.lms.model.Floor;
  */
 public class FloorTranslater {
 
-	
 	public FloorDto translate(Floor floor) {
 		FloorDto dto = new FloorDto();
 		

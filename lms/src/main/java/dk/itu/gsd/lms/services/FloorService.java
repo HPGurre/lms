@@ -6,12 +6,8 @@ public interface FloorService {
 	public Float getEnergyUsageByDay(Long floorID);
 	public Float getEnergyUsageByWeek(Long floorID);
 	public Float getEnergyUsageByMonth(Long floorID);
-	
-	
+	public void updateFloorMeasurementData();
 	
 	// Service method for serving content to android
 	public Floor getFloorData(Long floorId);
-	
-	
-
 }

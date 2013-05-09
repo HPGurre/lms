@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @SuppressWarnings("serial")
 @Entity
 @DiscriminatorValue("B")
-public class Bathroom extends AbstractRoom {
+public class Bathroom extends Room {
 
 	@Override
 	public String whatRoomAmI() {

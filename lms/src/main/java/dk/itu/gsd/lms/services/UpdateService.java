@@ -2,9 +2,10 @@ package dk.itu.gsd.lms.services;
 
 public interface UpdateService {
 	
-	// Scheduled method
-	public void updateMeasurements();
+	// Scheduled methods
+	public void initiateMeasurementUpdate();
 	
-	// Scheduled method
-	public void updateLights();
+	public void initiateLightTurnOff();
+	
+	public void initiateLightAdjustment();
 }

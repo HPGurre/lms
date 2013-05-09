@@ -5,7 +5,7 @@ import java.util.List;
 
 import dk.itu.gsd.lms.integration.exposed.building.model.SimpleFloor;
 import dk.itu.gsd.lms.integration.exposed.building.model.SimpleRoom;
-import dk.itu.gsd.lms.model.AbstractRoom;
+import dk.itu.gsd.lms.model.Room;
 import dk.itu.gsd.lms.model.Building;
 import dk.itu.gsd.lms.model.EnergyState;
 import dk.itu.gsd.lms.model.Floor;
@@ -34,7 +34,7 @@ public class BuildingTranslater{
 			sf.setFloorId(floor.getId());
 			
 			List<SimpleRoom> rooms = new ArrayList<SimpleRoom>();
-			for (AbstractRoom room : floor.getRooms()) {
+			for (Room room : floor.getRooms()) {
 				SimpleRoom sr = new SimpleRoom();
 				sr.setRoomID(room.getId());
 				rooms.add(sr);

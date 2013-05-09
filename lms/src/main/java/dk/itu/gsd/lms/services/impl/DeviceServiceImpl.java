@@ -14,11 +14,11 @@ public class DeviceServiceImpl implements DeviceService{
 	@Autowired
 	private DeviceAdapter deviceAdapter;
 		
-	public boolean toggleLight(String deviceId, float gain){
+	public boolean turnOffLight(String deviceId){
 		if(!deviceId.contains("light")){
 			throw new IllegalArgumentException("The Device is not a Light");
 		}			
-		return deviceAdapter.toggleLight(deviceId, gain);
+		return deviceAdapter.turnOffLight(deviceId);
 	}
 
 	@Override
@@ -34,5 +34,13 @@ public class DeviceServiceImpl implements DeviceService{
 			}
 		}	
 		return false;
+	}
+
+	@Override
+	public boolean adjustLight(String deviceId, double gain) {
+		if(!deviceId.contains("light")){
+			throw new IllegalArgumentException("The Device is not a Light");
+		}			
+		return deviceAdapter.adjustLight(deviceId, gain);
 	}
 }

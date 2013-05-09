@@ -18,13 +18,13 @@ import org.hibernate.annotations.LazyCollectionOption;
 @XmlRootElement
 public class Device extends HibernateModel implements Serializable{
 
+	@Column(name = "foreign_device_id", unique = true, nullable = false)
+	private String foreignDeviceId;
+	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToOne
 	@JoinColumn(name = "foreignkey_room_id")
-	private AbstractRoom room;
-	
-	@Column(name = "foreign_device_id", unique = true, nullable = false)
-	private String foreignDeviceId;
+	private Room room;
 
 	public String getForeignDeviceId() {
 		return foreignDeviceId;

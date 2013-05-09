@@ -8,12 +8,13 @@ import org.springframework.stereotype.Service;
 
 import dk.itu.gsd.lms.dao.LightingblockDao;
 import dk.itu.gsd.lms.dao.RoomDao;
-import dk.itu.gsd.lms.model.AbstractRoom;
+import dk.itu.gsd.lms.model.Room;
 import dk.itu.gsd.lms.model.LightingBlock;
 import dk.itu.gsd.lms.services.LightingBlockService;
 
 @Service("lightingBlockService")
 public class LightingBlockServiceImpl implements LightingBlockService {
+	
 	@Autowired
 	private RoomDao roomDao;
 	@Autowired
@@ -26,7 +27,7 @@ public class LightingBlockServiceImpl implements LightingBlockService {
 		
 		
 		
-		List<AbstractRoom> rooms = new ArrayList<AbstractRoom>();
+		List<Room> rooms = new ArrayList<Room>();
 		lightingBlock.setRooms(rooms);
 		for (Long id : roomIds) {
 			lightingBlock.getRooms().add(roomDao.find(id));

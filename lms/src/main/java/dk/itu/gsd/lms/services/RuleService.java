@@ -1,11 +1,15 @@
 package dk.itu.gsd.lms.services;
 
-import dk.itu.gsd.lms.model.AbstractRoom;
-import dk.itu.gsd.lms.model.LuxRuleObject;
+import dk.itu.gsd.lms.model.Room;
+import dk.itu.gsd.lms.model.RuleLux;
+import dk.itu.gsd.lms.model.RuleSchedule;
+import dk.itu.gsd.lms.model.RuleSecurity;
 
 public interface RuleService {
 
-	public int getRoomTimeout(AbstractRoom room);
+	public RuleSchedule getRoomSchedulePolicy(Room room);
 	
-	public LuxRuleObject getRoomRecommendedLux(AbstractRoom room);
+	public RuleLux getRoomLightingPolicy(Room room, double currentLux);
+
+	public RuleSecurity getRoomSecurityPolicy(Room room);
 }

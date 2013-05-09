@@ -1,17 +1,19 @@
 package dk.itu.gsd.lms.services.impl;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dk.itu.gsd.lms.dao.BuildingDao;
 import dk.itu.gsd.lms.integration.consumed.building.BuildingAdapter;
-import dk.itu.gsd.lms.model.AbstractRoom;
+import dk.itu.gsd.lms.model.Room;
 import dk.itu.gsd.lms.model.Building;
 import dk.itu.gsd.lms.model.Floor;
 import dk.itu.gsd.lms.services.BuildingService;
 
 @Service("buildingService")
 public class BuildingServiceImpl implements BuildingService {
+	private static Logger logger = Logger.getLogger(BuildingServiceImpl.class);
 
 	@Autowired
 	BuildingAdapter buildingAdapter;
@@ -39,10 +41,13 @@ public class BuildingServiceImpl implements BuildingService {
 		Float result = 0F;
 		Building building = buildingDao.find(bid);
 		for (Floor floor : building.getFloors()) {
-			for (AbstractRoom room : floor.getRooms()) {
-				result += room.getEnergyUsageLastDay();		
+			logger.debug("Floor is: "+result);
+			for (Room room : floor.getRooms()) {
+				result += room.getEnergyUsageLastDay();	
+				logger.debug("Room is: "+result);
 			}	
 		}
+		logger.debug("Result is: "+result);
 		return result;
 	}
 
@@ -51,7 +56,7 @@ public class BuildingServiceImpl implements BuildingService {
 		Float result = 0F;
 		Building building = buildingDao.find(bid);
 		for (Floor floor : building.getFloors()) {
-			for (AbstractRoom room : floor.getRooms()) {
+			for (Room room : floor.getRooms()) {
 				result += room.getEnergyUsageLastWeek();		
 			}	
 		}
@@ -63,7 +68,7 @@ public class BuildingServiceImpl implements BuildingService {
 		Float result = 0F;
 		Building building = buildingDao.find(bid);
 		for (Floor floor : building.getFloors()) {
-			for (AbstractRoom room : floor.getRooms()) {
+			for (Room room : floor.getRooms()) {
 				result += room.getEnergyUsageLastMonth();		
 			}	
 		}
@@ -73,5 +78,16 @@ public class BuildingServiceImpl implements BuildingService {
 	@Override
 	public Building getBuildingData(Long roomId) {
 		return buildingDao.find(roomId);
+	}
+
+	@Override
+	public void updateBuildingMeasurementData() {
+		for (Building building : buildingDao.findAll()) {
+			building.setEnergyUsageLastDay(getEnergyUsageByDay(building.getId()));
+			building.setEnergyUsageLastWeek(getEnergyUsageByWeek(building.getId()));
+			building.setEnergyUsageLastMonth(getEnergyUsageByMonth(building.getId()));
+			buildingDao.save(building);
+			logger.debug("Building measurements has been updated");
+		}
 	}
 }

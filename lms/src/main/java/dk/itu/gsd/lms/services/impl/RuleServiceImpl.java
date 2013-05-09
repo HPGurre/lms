@@ -9,12 +9,12 @@ import org.drools.runtime.StatelessKnowledgeSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dk.itu.gsd.lms.model.AbstractRoom;
+import dk.itu.gsd.lms.model.Room;
 import dk.itu.gsd.lms.model.EnergyState;
-import dk.itu.gsd.lms.model.LuxRuleObject;
-import dk.itu.gsd.lms.model.RoomActivity;
-import dk.itu.gsd.lms.model.ScheduleRuleObject;
-import dk.itu.gsd.lms.model.TimeRangeLabel;
+import dk.itu.gsd.lms.model.RuleLux;
+import dk.itu.gsd.lms.model.RuleSchedule;
+import dk.itu.gsd.lms.model.RuleSecurity;
+import dk.itu.gsd.lms.model.TimeOfDay;
 import dk.itu.gsd.lms.services.RoomService;
 import dk.itu.gsd.lms.services.RuleService;
 
@@ -23,42 +23,54 @@ public class RuleServiceImpl implements RuleService {
 	
 	@Autowired
 	private RoomService roomService;
-
+	
 	@Autowired
 	private StatelessKnowledgeSession ksession;
 	
 	@Autowired
 	private StatelessKnowledgeSession ksession1;
+	
+	@Autowired
+	private StatelessKnowledgeSession ksession2;
 
-	public int getRoomTimeout(AbstractRoom room) {
+	public RuleSchedule getRoomSchedulePolicy(Room room) {
 		Calendar now = Calendar.getInstance(Locale.ENGLISH);
 		String strDateFormat = "EEEE";
 		SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat, Locale.ENGLISH);
-
-		ScheduleRuleObject sro = new ScheduleRuleObject();
+		
+		RuleSchedule sro = new RuleSchedule();
 		sro.setDay(sdf.format(now.getTime()).toUpperCase());
 		sro.setRoomType(room.whatRoomAmI());
-		sro.setTimeRange(TimeRangeLabel.getLabelFromCalendar(now).toString());
+		sro.setTimeRange(TimeOfDay.getTimeOfDayFromCalendar(now).toString());
 
 		ksession.execute(Arrays.asList(new Object[] { sro }));
 
-		return sro.getTimeoutLimit();
+		return sro;
 	}
 
 	@Override
-	public LuxRuleObject getRoomRecommendedLux(AbstractRoom room) {
-	
-		LuxRuleObject lro = new LuxRuleObject();
-		lro.setCurrentLux(100);
-		lro.setRoomActivity(RoomActivity.LOUNGE.getDescription().toUpperCase());
-		lro.setEnergyState(EnergyState.ABUNDANT.getDisplayName().toUpperCase());
+	public RuleLux getRoomLightingPolicy(Room room, double currentLight) {
+		
+		RuleLux lro = new RuleLux();
+		lro.setCurrentLux(currentLight);
+		lro.setRoomActivity(room.getActivityMode().getDisplayName().toUpperCase());
+		lro.setEnergyState(EnergyState.ABUNDANT.getDisplayName().toUpperCase());//FIXME INSERT CORRECT ENERGYSTATE or else we hard code like this.
 
 		ksession1.execute(Arrays.asList(new Object[] { lro }));
 		
-		System.out.println(lro.getRecommendedLux());
-		System.out.println(lro.getShouldAdjustLight());
 		return lro;
 	}
+	
+	@Override
+	public RuleSecurity getRoomSecurityPolicy(Room room) {
 
+		RuleSecurity sro = new RuleSecurity();
+		sro.setRoomId(room.getForeignRoomID());
+		sro.setTimeRange(TimeOfDay.getTimeOfDayFromCalendar(Calendar.getInstance(Locale.ENGLISH)).toString());
+
+		ksession2.execute(Arrays.asList(new Object[] { sro }));
+		
+		return sro;
+	}
 
 }
