@@ -54,7 +54,7 @@ public class RuleServiceImpl implements RuleService {
 		RuleLux lro = new RuleLux();
 		lro.setCurrentLux(currentLight);
 		lro.setRoomActivity(room.getActivityMode().getDisplayName().toUpperCase());
-		lro.setEnergyState(EnergyState.ABUNDANT.getDisplayName().toUpperCase());//FIXME INSERT CORRECT ENERGYSTATE or else we hard code like this.
+		lro.setEnergyState(EnergyState.ABUNDANT.getDisplayName().toUpperCase());
 
 		ksession1.execute(Arrays.asList(new Object[] { lro }));
 		

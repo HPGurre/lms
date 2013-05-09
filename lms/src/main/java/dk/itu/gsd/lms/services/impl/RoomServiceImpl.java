@@ -169,7 +169,7 @@ public class RoomServiceImpl implements RoomService {
 			}
 			roomEnergyUsage += deviceEnergyUsage;
 		}
-		return (roomEnergyUsage / 1000 / 3600); // this is in kWh //FIXME is it always 30?
+		return (roomEnergyUsage / 1000 / 3600); // this is in kWh 
 	}
 
 	// TODO Do we need this method, Pu? YES
@@ -248,7 +248,7 @@ public class RoomServiceImpl implements RoomService {
 	public void updateRoomMeasurementdata() {
 
 		for (Room room : roomDao.findAll()) {
-			//FIXME These methods time out. I don't know where the error is.
+			//FIXME These methods time out. I don't know where the error is.Pu: I don't see where you mean by time out? I run the measurement quite fine.
 			room.setEnergyUsageLastDay(getEnergyUsageByDay(room));
 			room.setEnergyUsageLastWeek(getEnergyUsageByWeek(room));
 			room.setEnergyUsageLastMonth(getEnergyUsageByMonth(room));
@@ -336,7 +336,7 @@ public class RoomServiceImpl implements RoomService {
 			MeasurementDto light = roomAdapter.getCurrentRoomLight(room.getForeignRoomID());
 			
 			// Double adjustmentRatio 
-			Double lampAdjustment = (double) this.getLampAdjustment(room); // FIXME do correct calculation here. We need to find out by how much we should adjust the light in the room
+			Double lampAdjustment = (double) this.getLampAdjustment(room); // FIXME Pu: done! Do correct calculation here. We need to find out by how much we should adjust the light in the room
 
 			// Look up if the current light level should be adjusted.
 			RuleLux rule = ruleService.getRoomLightingPolicy(room, Float.parseFloat(light.getValue()));
@@ -346,7 +346,6 @@ public class RoomServiceImpl implements RoomService {
 				//Double recommendedLight = rule.getRecommendedLux();			//lux
 				//minimumLight = recommendedLight * roomsize;
 				//Double actualLight = Double.parseDouble(light.getValue());  //lumens or photons = how much light get through the room
-
 				
 				for (Device device : room.getDevices()) {
 					if (device.getForeignDeviceId().contains("light")) {
@@ -355,9 +354,20 @@ public class RoomServiceImpl implements RoomService {
 						Double newGainValue = Double.valueOf(currentGainMeasurement.getValue()) + lampAdjustment; //increase or decrease gain value
 						newGainValue = Math.min(1d, Math.max(0d, newGainValue)); //make sure value is between 0 and 1
 						deviceAdapter.adjustLight(device.getForeignDeviceId(), newGainValue);  //adjust lamp setting
+						logger.debug(String.format("Adjusting lamp %s from %f to %f ", device.getForeignDeviceId(), Double.valueOf(currentGainMeasurement.getValue()), newGainValue ));
 					}
 
 				}
+				//wait a sec or two
+				try {
+				    Thread.sleep(2000);
+				} catch(InterruptedException ex) {
+				    Thread.currentThread().interrupt();
+				}
+				// Get the current light for the room
+			 	light = roomAdapter.getCurrentRoomLight(room.getForeignRoomID());
+				Float actualLight = Float.parseFloat(light.getValue()); 
+				logger.debug(String.format("Light in room %s is now %f lumens", room.getForeignRoomID(), actualLight ));
 				// In case it needs NOT to be adjusted we ignore
 			} else {
 				// do nothing...
