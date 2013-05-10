@@ -176,16 +176,16 @@ public class RoomServiceImpl implements RoomService {
 	// Explanation: return the adjustment of power level (gain) for each lamp in the room in order to
 	// fulfil minimum luminance level in the room.
 	 public double getLampAdjustment(Room room) {
-		  double absPowerAdjustment = 0.0f; // extra luminance supplied by lamps (can be negative!)
-		 
+		  double newGainValue = 0.0f; // new gain value of all lamps in room to give the required minimum luminance level
 		 double minRoomLum = 0.0f; // minimum luminance in room based on policy
 		 // model (lumens [lm])
 		 
 		 int noOfLamps = 0; // number of lamps in room
-		 EnergyState energyState = EnergyState.NORMAL;
 		 //int activityLevel = 0; // activity level of room
 		 double adjustPowerFactor = 0d;
 		 double roomsize = 5d; //5 m2
+		 double maxLampPower = 60d; //assume all lamps are 60W
+		 double oldTotalLampPower = 0d; // this is the current total power level of all lamps in the room
 	
 		 Calendar now = Calendar.getInstance();
 	
@@ -203,21 +203,22 @@ public class RoomServiceImpl implements RoomService {
 	 double efficacyLamp = 45f; // Assuming value based on table above: efficacy of lamps in room [lm/W]
 	 
 	 // get number of lamps in room
+	 // and total power of all lamps in room
 	 for (Device device : room.getDevices()) { // loop over all devices in
 		 // room
 		 String id = device.getForeignDeviceId();
 	 	if (id.contains("light")) {
 	 		noOfLamps = noOfLamps + 1;
+	 		MeasurementDto currentGainMeasurement = deviceAdapter.getLatestDeviceMeasurement(id, "gain");
+	 		oldTotalLampPower = oldTotalLampPower + Double.valueOf(currentGainMeasurement.getValue())* maxLampPower ;
 	 	}
 	 }
 	
-	 // retrieve minimum luminous flux (lumens) level required by policy model first, get energy state of building
-	 energyState = EnergyState.NORMAL;	 
 	 
 	 // Get the current light for the room
  	 MeasurementDto light = roomAdapter.getCurrentRoomLight(room.getForeignRoomID());
 	 Float actualLight = Float.parseFloat(light.getValue());  // assume this is lumens (= k photons) = how much light get through window + light from lamps
-
+	 logger.debug(String.format("Light in room %s is %f lumens", room.getForeignRoomID(), actualLight ));
 	// Look up if the current light level should be adjusted.
 	RuleLux rule = ruleService.getRoomLightingPolicy(room, Float.parseFloat(light.getValue()));
 
@@ -225,18 +226,21 @@ public class RoomServiceImpl implements RoomService {
 	minRoomLum = rule.getRecommendedLux() * roomsize;			//lumens
 	
 	 // calculate extra light to be supplied by each lamp
-	 absPowerAdjustment = (minRoomLum - actualLight) / noOfLamps;
+	 //absPowerAdjustment = (minRoomLum - actualLight) / noOfLamps;
 	
-	 // convert from luminous flux (lumens) to power (W) -- assume all lamps have max power = 60 W
-	 adjustPowerFactor = absPowerAdjustment / efficacyLamp / 60.0f ;
+	double sunLum = actualLight - oldTotalLampPower * efficacyLamp;  //Luminance associated with sun (coming through window)
+	
+	 // convert from luminous flux (lumens) to power (W) to Gain value assuming max power of all lamps = maxLampPower
+	 newGainValue = (minRoomLum - sunLum) / efficacyLamp / maxLampPower / noOfLamps ;
 	
 	 System.out.println("no of lamps = " + noOfLamps);
 	 System.out.println("Actual light = " + actualLight);
+	 
 	 System.out.println("Min light = " + minRoomLum);
-	 System.out.println("absPowerAdjustment = " + absPowerAdjustment);
-	 System.out.println("adjustPowerFactor = " + adjustPowerFactor);
-	 // Note: return minimum power required by each lamp in the room in W
-	 return adjustPowerFactor;
+	 System.out.println("old power = " + oldTotalLampPower);
+	 System.out.println("new Power = " + (minRoomLum - sunLum)/efficacyLamp);
+	 // Note: return minimum "gain"-setting required by each lamp in the room
+	 return newGainValue;
 	 }
 	
 	@Override
@@ -335,7 +339,7 @@ public class RoomServiceImpl implements RoomService {
 			// Get the current light for the room
 			MeasurementDto light = roomAdapter.getCurrentRoomLight(room.getForeignRoomID());
 			
-			// Double adjustmentRatio 
+			// Get new gain value for all lamps in room to supply required minimum luminance level
 			Double lampAdjustment = (double) this.getLampAdjustment(room); // FIXME Pu: done! Do correct calculation here. We need to find out by how much we should adjust the light in the room
 
 			// Look up if the current light level should be adjusted.
@@ -351,16 +355,16 @@ public class RoomServiceImpl implements RoomService {
 					if (device.getForeignDeviceId().contains("light")) {
 						MeasurementDto currentGainMeasurement = deviceAdapter.getLatestDeviceMeasurement(device.getForeignDeviceId(), "gain");
 
-						Double newGainValue = Double.valueOf(currentGainMeasurement.getValue()) + lampAdjustment; //increase or decrease gain value
+						Double newGainValue = lampAdjustment; //increase or decrease gain value
 						newGainValue = Math.min(1d, Math.max(0d, newGainValue)); //make sure value is between 0 and 1
 						deviceAdapter.adjustLight(device.getForeignDeviceId(), newGainValue);  //adjust lamp setting
 						logger.debug(String.format("Adjusting lamp %s from %f to %f ", device.getForeignDeviceId(), Double.valueOf(currentGainMeasurement.getValue()), newGainValue ));
 					}
 
 				}
-				//wait a sec or two
+				//wait a millisec or two
 				try {
-				    Thread.sleep(2000);
+				    Thread.sleep(1);
 				} catch(InterruptedException ex) {
 				    Thread.currentThread().interrupt();
 				}
