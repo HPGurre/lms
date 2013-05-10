@@ -36,13 +36,13 @@ public class UpdateServiceImpl implements UpdateService {
 	@Autowired
 	private BuildingDao buildingDao;
 	@Autowired
-	private LightingBlockService ligtingblockService;
+	private LightingBlockService lightingblockService;
 
 	public void initiateMeasurementUpdate() {
 		logger.debug("Updating local measurement data");
 		roomService.updateRoomMeasurementdata();
 		//floorService.updateFloorMeasurementData();
-		//buildingService.updateBuildingMeasurementData();
+		buildingService.updateBuildingMeasurementData();
 	}
 
 	@Override

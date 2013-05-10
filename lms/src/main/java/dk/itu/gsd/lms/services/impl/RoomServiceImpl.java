@@ -44,6 +44,7 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired private BuildingDao buildingDao;
 	@Autowired private RuleService ruleService;
 
+	
 	@Override
 	public Float getEnergyUsageByDay(Room room) {
 		Float roomEnergyUsage = 0.0f;
@@ -83,6 +84,7 @@ public class RoomServiceImpl implements RoomService {
 			}
 			roomEnergyUsage += deviceEnergyUsage;
 		}
+		 logger.debug(String.format("Energy usage by day in room %s = %f kWh", room.getForeignRoomID(), roomEnergyUsage/1000/3600 ));
 		return roomEnergyUsage / 1000 / 3600; // this is in kWh
 	}
 
@@ -218,7 +220,7 @@ public class RoomServiceImpl implements RoomService {
 	 // Get the current light for the room
  	 MeasurementDto light = roomAdapter.getCurrentRoomLight(room.getForeignRoomID());
 	 Float actualLight = Float.parseFloat(light.getValue());  // assume this is lumens (= k photons) = how much light get through window + light from lamps
-	 logger.debug(String.format("Light in room %s is %f lumens", room.getForeignRoomID(), actualLight ));
+//	 logger.debug(String.format("Light in room %s is %f lumens", room.getForeignRoomID(), actualLight ));
 	// Look up if the current light level should be adjusted.
 	RuleLux rule = ruleService.getRoomLightingPolicy(room, Float.parseFloat(light.getValue()));
 
@@ -233,12 +235,11 @@ public class RoomServiceImpl implements RoomService {
 	 // convert from luminous flux (lumens) to power (W) to Gain value assuming max power of all lamps = maxLampPower
 	 newGainValue = (minRoomLum - sunLum) / efficacyLamp / maxLampPower / noOfLamps ;
 	
-	 System.out.println("no of lamps = " + noOfLamps);
-	 System.out.println("Actual light = " + actualLight);
-	 
-	 System.out.println("Min light = " + minRoomLum);
-	 System.out.println("old power = " + oldTotalLampPower);
-	 System.out.println("new Power = " + (minRoomLum - sunLum)/efficacyLamp);
+//	 System.out.println("no of lamps = " + noOfLamps);
+//	 System.out.println("Actual light = " + actualLight);
+//	 System.out.println("Min light = " + minRoomLum);
+//	 System.out.println("old power = " + oldTotalLampPower);
+//	 System.out.println("new Power = " + (minRoomLum - sunLum)/efficacyLamp);
 	 // Note: return minimum "gain"-setting required by each lamp in the room
 	 return newGainValue;
 	 }
@@ -265,6 +266,16 @@ public class RoomServiceImpl implements RoomService {
 	public void turnOffLight() {
 		// Go through each room in the building
 		for (Room room : roomDao.findAll()) {
+
+			// Get the current light for the room
+			MeasurementDto light = roomAdapter.getCurrentRoomLight(room.getForeignRoomID());
+			
+			// Look up if the current light level should be adjusted.
+			// Only turn off lights if we allow to adjust light!!!
+			RuleLux rule = ruleService.getRoomLightingPolicy(room, Float.parseFloat(light.getValue()));
+
+			// In case it needs to be adjusted
+			if (rule.getShouldAdjustLight()) {
 
 			// If lighting is not allowed we turn of the light and continue to
 			// next room
@@ -304,6 +315,7 @@ public class RoomServiceImpl implements RoomService {
 					roomActivity = true;
 					break;
 				}
+			
 			}
 
 			// if there has not been any room Activity then we shut off the lights.
@@ -314,6 +326,7 @@ public class RoomServiceImpl implements RoomService {
 						deviceService.turnOffLight(theDevice.getForeignDeviceId());
 					}
 				}
+			}
 			}
 		}
 	}
@@ -353,12 +366,11 @@ public class RoomServiceImpl implements RoomService {
 				
 				for (Device device : room.getDevices()) {
 					if (device.getForeignDeviceId().contains("light")) {
-						MeasurementDto currentGainMeasurement = deviceAdapter.getLatestDeviceMeasurement(device.getForeignDeviceId(), "gain");
 
 						Double newGainValue = lampAdjustment; //increase or decrease gain value
 						newGainValue = Math.min(1d, Math.max(0d, newGainValue)); //make sure value is between 0 and 1
 						deviceAdapter.adjustLight(device.getForeignDeviceId(), newGainValue);  //adjust lamp setting
-						logger.debug(String.format("Adjusting lamp %s from %f to %f ", device.getForeignDeviceId(), Double.valueOf(currentGainMeasurement.getValue()), newGainValue ));
+						//logger.debug(String.format("Adjusting lamp %s from %f to %f ", device.getForeignDeviceId(), Double.valueOf(currentGainMeasurement.getValue()), newGainValue ));
 					}
 
 				}
@@ -368,14 +380,15 @@ public class RoomServiceImpl implements RoomService {
 				} catch(InterruptedException ex) {
 				    Thread.currentThread().interrupt();
 				}
-				// Get the current light for the room
-			 	light = roomAdapter.getCurrentRoomLight(room.getForeignRoomID());
-				Float actualLight = Float.parseFloat(light.getValue()); 
-				logger.debug(String.format("Light in room %s is now %f lumens", room.getForeignRoomID(), actualLight ));
+				
 				// In case it needs NOT to be adjusted we ignore
 			} else {
 				// do nothing...
 			}
+			// Get the current light for the room
+		 	light = roomAdapter.getCurrentRoomLight(room.getForeignRoomID());
+			Float actualLight = Float.parseFloat(light.getValue()); 
+			logger.debug(String.format("Light in room %s is now %f lumens", room.getForeignRoomID(), actualLight ));
 		}
 	}
 	private static Long convertTimestampStringToSeconds(String timestamp) {

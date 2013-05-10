@@ -10,6 +10,7 @@ import dk.itu.gsd.lms.model.Room;
 import dk.itu.gsd.lms.model.Building;
 import dk.itu.gsd.lms.model.Floor;
 import dk.itu.gsd.lms.services.BuildingService;
+import dk.itu.gsd.lms.services.RoomService;
 
 @Service("buildingService")
 public class BuildingServiceImpl implements BuildingService {
@@ -35,7 +36,7 @@ public class BuildingServiceImpl implements BuildingService {
 	public Building getBuilding(Long bid) {
 		return buildingDao.find(bid);
 	}
-
+	
 	@Override
 	public Float getEnergyUsageByDay(Long bid) {
 		Float result = 0F;
@@ -88,6 +89,7 @@ public class BuildingServiceImpl implements BuildingService {
 			building.setEnergyUsageLastMonth(getEnergyUsageByMonth(building.getId()));
 			buildingDao.save(building);
 			logger.debug("Building measurements has been updated");
+			logger.debug("Energy usage by day " + getEnergyUsageByDay(building.getId()));
 		}
 	}
 }

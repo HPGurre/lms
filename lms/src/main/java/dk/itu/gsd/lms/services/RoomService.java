@@ -18,6 +18,4 @@ public interface RoomService {
 	public void updateRoomMeasurementdata();
 	public void turnOffLight();
 	
-	
-	
 }
